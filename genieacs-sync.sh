@@ -116,25 +116,22 @@ flatten_and_sync() {
     local content=$1
     local prefix=$2
 
-    echo -e "${BLUE}Flattening and syncing ${prefix}...${NC}"
+    echo -e "${BLUE}Flattening and preparing ${prefix}...${NC}"
     
-    # Use jq to get all leaf paths and values
-    # This turns {a: {b: 1}} into "a.b=1"
-    # We use -c for values to handle strings, numbers, and nulls correctly
-    items=$(echo "$content" | jq -r 'tostream | select(length > 1) | [ ( [.[0][] | tostring] | join(".") ), ( .[1] | @json ) ] | @tsv')
-    
-    while IFS=$'\t' read -r path value; do
-        full_path="${prefix}.${path}"
-        # If prefix is empty, don't add a leading dot
-        [[ -z "$prefix" ]] && full_path="$path"
-        
-        echo -n "Syncing ${full_path}... "
-        # Build the MongoDB command safely with jq and pipe it to mongosh
-        jq -n --arg id "$full_path" --argjson val "$value" \
-          ' "db.config.updateOne({_id: $id}, {$set: {value: $val}}, {upsert: true})" ' -r | \
-          mongosh --quiet "$DB_NAME" > /dev/null
+    # Use jq to build all the MongoDB commands at once
+    # We generate a single string of multiple db.config.updateOne calls
+    local batch_script
+    batch_script=$(echo "$content" | jq -r --arg prefix "$prefix" '
+        tostream | select(length > 1) | 
+        [ ( [.[0][] | tostring] | join(".") ), ( .[1] | @json ) ] | 
+        "db.config.updateOne({_id: \"\($prefix + (if $prefix == \"\" then \"\" else \".\" end) + .[0])\"}, {$set: {value: \(.[1])}}, {upsert: true});"
+    ')
+
+    if [[ -n "$batch_script" ]]; then
+        echo -n "Syncing ${prefix} batch to MongoDB... "
+        echo "$batch_script" | mongosh --quiet "$DB_NAME" > /dev/null
         echo -e "${GREEN}Done${NC}"
-    done <<< "$items"
+    fi
 }
 
 sync_configs() {
