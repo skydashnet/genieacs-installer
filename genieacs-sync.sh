@@ -175,7 +175,7 @@ sync_configs() {
                 ;;
             index-page) prefix="ui.index" ;;
             filter) prefix="ui.filters" ;;
-            overview) prefix="ui.overview" ;;
+            overview) prefix="ui.overview.groups" ;;
             chart) prefix="ui.overview.charts" ;;
             config) prefix="" ;; 
         esac
