@@ -37,7 +37,7 @@ echo -e "${BLUE}Starting GenieACS Installation on Debian...${NC}"
 # 1. Update and install basic dependencies
 echo -e "${BLUE}Installing basic dependencies...${NC}"
 apt-get update
-apt-get install -y curl gnupg build-essential jq git logrotate
+apt-get install -y curl gnupg build-essential jq git logrotate lsb-release
 
 # 2. Install Node.js
 echo -e "${BLUE}Installing Node.js ${NODE_VERSION}...${NC}"
@@ -46,10 +46,18 @@ apt-get install -y nodejs
 
 # 3. Install MongoDB
 echo -e "${BLUE}Installing MongoDB ${MONGODB_VERSION}...${NC}"
+
+# Detect Debian Codename and fallback to bookworm if on trixie/testing
+CODENAME=$(lsb_release -cs)
+if [[ "$CODENAME" == "trixie" || "$CODENAME" == "sid" || -z "$CODENAME" ]]; then
+    echo -e "${BLUE}Debian ${CODENAME} detected. Falling back to Bookworm repository for MongoDB compatibility.${NC}"
+    CODENAME="bookworm"
+fi
+
 curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc | \
    gpg --dearmor -o /usr/share/keyrings/mongodb-server-keyring.gpg
    
-echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-keyring.gpg ] http://repo.mongodb.org/apt/debian $(lsb_release -cs)/mongodb-org/${MONGODB_VERSION} main" | \
+echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-keyring.gpg ] http://repo.mongodb.org/apt/debian ${CODENAME}/mongodb-org/${MONGODB_VERSION} main" | \
    tee /etc/apt/sources.list.d/mongodb-org-${MONGODB_VERSION}.list
 
 apt-get update
