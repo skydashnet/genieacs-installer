@@ -153,7 +153,15 @@ sync_configs() {
         prefix=""
         case ${file%.*} in
             device-page) prefix="ui.device" ;;
-            index-page-wanip|index-page-wanppp|index-page) prefix="ui.index" ;;
+            index-page-wanip) 
+                [[ "$INDEX_TYPE" != "wanip" ]] && continue
+                prefix="ui.index" 
+                ;;
+            index-page-wanppp) 
+                [[ "$INDEX_TYPE" != "wanppp" ]] && continue
+                prefix="ui.index" 
+                ;;
+            index-page) prefix="ui.index" ;;
             filter) prefix="ui.filters" ;;
             overview) prefix="ui.overview" ;;
             chart) prefix="ui.overview.charts" ;;
@@ -167,6 +175,7 @@ sync_configs() {
 # --- Main ---
 
 MODE="interactive"
+INDEX_TYPE="both" # Default to both if not specified
 ACS_URL=""
 
 while [[ "$#" -gt 0 ]]; do
@@ -192,6 +201,18 @@ if [[ "$MODE" == "interactive" ]]; then
         2) MODE="vparams" ;;
         *) exit 0 ;;
     esac
+
+    if [[ "$MODE" == "full" ]]; then
+        echo -e "\n${BLUE}Select Index Page Layout:${NC}"
+        echo "1) WAN IP (index-page-wanip.yaml)"
+        echo "2) WAN PPP (index-page-wanppp.yaml)"
+        read -p "Select an option [1-2]: " index_choice
+        case $index_choice in
+            1) INDEX_TYPE="wanip" ;;
+            2) INDEX_TYPE="wanppp" ;;
+            *) INDEX_TYPE="wanip" ;; # Default
+        esac
+    fi
 fi
 
 # Always prompt for ACS URL if not provided via flag
