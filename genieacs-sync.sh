@@ -129,7 +129,10 @@ flatten_and_sync() {
         [[ -z "$prefix" ]] && full_path="$path"
         
         echo -n "Syncing ${full_path}... "
-        mongosh --quiet "$DB_NAME" --eval "db.config.updateOne({_id: '$full_path'}, {\$set: {value: $value}}, {upsert: true})" > /dev/null
+        # Build the MongoDB command safely with jq and pipe it to mongosh
+        jq -n --arg id "$full_path" --argjson val "$value" \
+          ' "db.config.updateOne({_id: $id}, {$set: {value: $val}}, {upsert: true})" ' -r | \
+          mongosh --quiet "$DB_NAME" > /dev/null
         echo -e "${GREEN}Done${NC}"
     done <<< "$items"
 }
