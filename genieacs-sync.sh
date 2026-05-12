@@ -153,10 +153,11 @@ sync_configs() {
         prefix=""
         case ${file%.*} in
             device-page) prefix="ui.device" ;;
-            index-page-wanip|index-page-wanppp) prefix="ui.index" ;;
+            index-page-wanip|index-page-wanppp|index-page) prefix="ui.index" ;;
             filter) prefix="ui.filters" ;;
             overview) prefix="ui.overview" ;;
-            config) prefix="" ;; # config.json handles its own top-level keys
+            chart) prefix="ui.overview.charts" ;;
+            config) prefix="" ;; 
         esac
 
         flatten_and_sync "$content" "$prefix"
