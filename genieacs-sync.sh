@@ -60,11 +60,15 @@ sync_item() {
         content=$(echo "$content" | sed "s|{{ACS_URL}}|$ACS_URL|g")
     fi
 
-    curl -s -X PUT "${NBI_URL}/${type}/${name}" \
+    response=$(curl -s -X PUT "${NBI_URL}/${type}/${name}" \
         --header "Content-Type: ${content_type}" \
-        --data-binary "$content" > /dev/null
+        --data-binary "$content")
     
-    echo -e "${GREEN}Done${NC}"
+    if [[ -n "$response" ]]; then
+        echo -e "${RED}Response: $response${NC}"
+    else
+        echo -e "${GREEN}Done${NC}"
+    fi
 }
 
 prune_all() {
@@ -112,10 +116,16 @@ sync_configs() {
             for key in $keys; do
                 value=$(echo "$content" | jq -c ".\"$key\"")
                 echo -n "Syncing config/${key}... "
-                curl -s -X PUT "${NBI_URL}/config/${key}" \
+                echo -n "Syncing config/${key}... "
+                response=$(curl -s -X PUT "${NBI_URL}/config/${key}" \
                     --header "Content-Type: application/json" \
-                    --data-binary "$value" > /dev/null
-                echo -e "${GREEN}Done${NC}"
+                    --data-binary "$value")
+                
+                if [[ -n "$response" ]]; then
+                    echo -e "${RED}Response: $response${NC}"
+                else
+                    echo -e "${GREEN}Done${NC}"
+                fi
             done
             continue
         fi
