@@ -136,8 +136,16 @@ flatten_and_sync() {
 
     if [[ -n "$batch_script" ]]; then
         echo -n "Syncing ${prefix} batch to MongoDB... "
-        echo "$batch_script" | mongosh --quiet "$DB_NAME" > /dev/null
-        echo -e "${GREEN}Done${NC}"
+        # Use a temporary file for the batch script to avoid shell piping issues
+        local temp_script="/tmp/genieacs_batch_$(date +%s).js"
+        echo "$batch_script" > "$temp_script"
+        
+        if mongosh --quiet "$DB_NAME" "$temp_script" > /dev/null; then
+            echo -e "${GREEN}Done${NC}"
+        else
+            echo -e "${RED}Failed to execute batch script${NC}"
+        fi
+        rm -f "$temp_script"
     fi
 }
 
