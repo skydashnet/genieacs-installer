@@ -144,10 +144,9 @@ sync_configs() {
         
         # If it's a YAML file, convert to JSON for jq
         if [[ $file == *.yaml || $file == *.yml ]]; then
-            # We use a simple python snippet to convert YAML to JSON if available, 
-            # or just assume the user might have yq. 
-            # For maximum compatibility, let's use a ruby or node one-liner
-            content=$(echo "$content" | node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
+            # We must set NODE_PATH so node can find the global js-yaml
+            GLOBAL_NODE_MODULES=$(npm root -g)
+            content=$(echo "$content" | NODE_PATH="$GLOBAL_NODE_MODULES" node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
         fi
 
         # Determine prefix based on filename
