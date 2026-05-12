@@ -112,36 +112,55 @@ sync_vparams() {
     done
 }
 
+flatten_and_sync() {
+    local content=$1
+    local prefix=$2
+
+    echo -e "${BLUE}Flattening and syncing ${prefix}...${NC}"
+    
+    # Use jq to get all leaf paths and values
+    # This turns {a: {b: 1}} into "a.b=1"
+    # We use -c for values to handle strings, numbers, and nulls correctly
+    items=$(echo "$content" | jq -r 'tostream | select(length > 1) | [ ( [.[0][] | tostring] | join(".") ), ( .[1] | @json ) ] | @tsv')
+    
+    while IFS=$'\t' read -r path value; do
+        full_path="${prefix}.${path}"
+        # If prefix is empty, don't add a leading dot
+        [[ -z "$prefix" ]] && full_path="$path"
+        
+        echo -n "Syncing ${full_path}... "
+        mongosh --quiet "$DB_NAME" --eval "db.config.updateOne({_id: '$full_path'}, {\$set: {value: $value}}, {upsert: true})" > /dev/null
+        echo -e "${GREEN}Done${NC}"
+    done <<< "$items"
+}
+
 sync_configs() {
-    echo -e "${BLUE}Syncing Configurations (Pages & Settings)...${NC}"
+    echo -e "${BLUE}Syncing Configurations (Deep Flattening)...${NC}"
     
     files=$(fetch_repo_files "config")
     for file in $files; do
-        if [[ $file == "config.json" ]]; then
-            echo -e "${BLUE}Applying bulk settings from config.json...${NC}"
-            content=$(curl -sL "${GITHUB_RAW_URL}/config/${file}")
-            keys=$(echo "$content" | jq -r 'keys[]')
-            for key in $keys; do
-                value=$(echo "$content" | jq -c ".\"$key\"")
-                echo -n "Syncing config/${key}... "
-                
-                # Direct DB update for bulk settings
-                mongosh --quiet "$DB_NAME" --eval "db.config.updateOne({_id: '$key'}, {\$set: {value: $value}}, {upsert: true})" > /dev/null
-                echo -e "${GREEN}Done (DB)${NC}"
-            done
-            continue
+        echo -e "${BLUE}Processing ${file}...${NC}"
+        content=$(curl -sL "${GITHUB_RAW_URL}/config/${file}")
+        
+        # If it's a YAML file, convert to JSON for jq
+        if [[ $file == *.yaml || $file == *.yml ]]; then
+            # We use a simple python snippet to convert YAML to JSON if available, 
+            # or just assume the user might have yq. 
+            # For maximum compatibility, let's use a ruby or node one-liner
+            content=$(echo "$content" | node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
         fi
 
-        name="${file%.*}"
-        target_name="$name"
-        case $name in
-            device-page) target_name="ui.device_page" ;;
-            filter) target_name="ui.filter_page" ;;
-            overview) target_name="ui.overview_page" ;;
-            index-page-wanip|index-page-wanppp) target_name="ui.index_page" ;;
+        # Determine prefix based on filename
+        prefix=""
+        case ${file%.*} in
+            device-page) prefix="ui.device" ;;
+            index-page-wanip|index-page-wanppp) prefix="ui.index" ;;
+            filter) prefix="ui.filters" ;;
+            overview) prefix="ui.overview" ;;
+            config) prefix="" ;; # config.json handles its own top-level keys
         esac
-        
-        sync_item "config" "$target_name" "${GITHUB_RAW_URL}/config/${file}" "unused"
+
+        flatten_and_sync "$content" "$prefix"
     done
 }
 

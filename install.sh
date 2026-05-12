@@ -43,6 +43,7 @@ apt-get install -y curl gnupg build-essential jq git logrotate lsb-release
 echo -e "${BLUE}Installing Node.js ${NODE_VERSION}...${NC}"
 curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
 apt-get install -y nodejs
+npm install -g js-yaml
 
 # 3. Install MongoDB
 echo -e "${BLUE}Installing MongoDB ${MONGODB_VERSION}...${NC}"
