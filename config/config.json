@@ -1,0 +1,6 @@
+{
+  "cwmp.auth": null,
+  "cwmp.connectionRequestAuth": "AUTH(InternetGatewayDevice.ManagementServer.ConnectionRequestUsername, InternetGatewayDevice.ManagementServer.ConnectionRequestPassword) OR AUTH(\"conreq\", \"conreq\") OR AUTH(username, password)",
+  "cwmp.deviceOnlineThreshold": 60000,
+  "cwmp.maxCommitIterations": 512
+}

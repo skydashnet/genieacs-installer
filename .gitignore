@@ -1,0 +1,10 @@
+# Logs
+*.log
+
+# GenieACS local state (if any)
+ext/
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
