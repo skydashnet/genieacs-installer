@@ -11,6 +11,7 @@ REPO_OWNER="EtherGig"
 REPO_NAME="genieacs-installer"
 BRANCH="master"
 NBI_URL="http://localhost:7557"
+UI_URL="http://localhost:3000"
 GITHUB_RAW_URL="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}"
 GITHUB_API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents"
 
@@ -60,9 +61,20 @@ sync_item() {
         content=$(echo "$content" | sed "s|{{ACS_URL}}|$ACS_URL|g")
     fi
 
-    response=$(curl -s -X PUT "${NBI_URL}/${type}/${name}" \
-        --header "Content-Type: ${content_type}" \
-        --data-binary "$content")
+    # Use different endpoint for config
+    local target_url="${NBI_URL}/${type}/${name}"
+    local body="$content"
+    
+    if [[ "$type" == "config" ]]; then
+        target_url="${UI_URL}/api/config/${name}"
+        # Wrap content in a JSON object with a "value" key
+        # We use jq to safely escape the content
+        body=$(jq -n --arg val "$content" '{"value": $val}')
+    fi
+
+    response=$(curl -s -X PUT "$target_url" \
+        --header "Content-Type: application/json" \
+        --data-binary "$body")
     
     if [[ -n "$response" ]]; then
         echo -e "${RED}Response: $response${NC}"
@@ -104,8 +116,6 @@ sync_vparams() {
 
 sync_configs() {
     echo -e "${BLUE}Syncing Configurations (Pages & Settings)...${NC}"
-    # Note: We don't prune ALL configs as some are system defaults, 
-    # but we will overwrite whatever is in the repo.
     
     files=$(fetch_repo_files "config")
     for file in $files; do
@@ -116,10 +126,13 @@ sync_configs() {
             for key in $keys; do
                 value=$(echo "$content" | jq -c ".\"$key\"")
                 echo -n "Syncing config/${key}... "
-                echo -n "Syncing config/${key}... "
-                response=$(curl -s -X PUT "${NBI_URL}/config/${key}" \
+                
+                # Wrap in {"value": ...} for UI API
+                body=$(jq -n --argjson val "$value" '{"value": $val}')
+                
+                response=$(curl -s -X PUT "${UI_URL}/api/config/${key}" \
                     --header "Content-Type: application/json" \
-                    --data-binary "$value")
+                    --data-binary "$body")
                 
                 if [[ -n "$response" ]]; then
                     echo -e "${RED}Response: $response${NC}"
@@ -139,10 +152,7 @@ sync_configs() {
             index-page-wanip|index-page-wanppp) target_name="index_page" ;;
         esac
         
-        content_type="application/json"
-        [[ $file == *.yaml || $file == *.yml || $file == *.txt ]] && content_type="text/plain"
-        
-        sync_item "config" "$target_name" "${GITHUB_RAW_URL}/config/${file}" "$content_type"
+        sync_item "config" "$target_name" "${GITHUB_RAW_URL}/config/${file}" "unused"
     done
 }
 
