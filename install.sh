@@ -7,7 +7,7 @@ set -e
 
 # Configuration
 NODE_VERSION="20"
-MONGODB_VERSION="7.0"
+MONGODB_VERSION="8.0"
 GENIEACS_USER="genieacs"
 GENIEACS_HOME="/opt/genieacs"
 LOG_DIR="/var/log/genieacs"
@@ -54,7 +54,8 @@ if [[ "$CODENAME" == "trixie" || "$CODENAME" == "sid" || -z "$CODENAME" ]]; then
     CODENAME="bookworm"
 fi
 
-curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc | \
+# Use the newer pgp.mongodb.com domain for keys
+curl -fsSL https://pgp.mongodb.com/server-${MONGODB_VERSION}.asc | \
    gpg --dearmor -o /usr/share/keyrings/mongodb-server-keyring.gpg
    
 echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-keyring.gpg ] http://repo.mongodb.org/apt/debian ${CODENAME}/mongodb-org/${MONGODB_VERSION} main" | \
