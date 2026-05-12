@@ -123,8 +123,8 @@ flatten_and_sync() {
     local batch_script
     batch_script=$(echo "$content" | jq -r --arg prefix "$prefix" '
         tostream | select(length > 1) | 
-        [ ( [.[0][] | tostring] | join(".") ), ( .[1] | @json ) ] | 
-        "db.config.updateOne({_id: \"\($prefix + (if $prefix == \"\" then \"\" else \".\" end) + .[0])\"}, {$set: {value: \(.[1])}}, {upsert: true});"
+        [ ( [.[0][] | tostring] | join(".") ) ] | 
+        "db.config.updateOne({_id: " + (($prefix + (if $prefix == "" then "" else "." end) + .[0]) | @json) + "}, {$set: {value: " + (.[1] | @json) + "}, {upsert: true});"
     ')
 
     if [[ -n "$batch_script" ]]; then
