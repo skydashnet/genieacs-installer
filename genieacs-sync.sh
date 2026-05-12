@@ -118,14 +118,6 @@ flatten_and_sync() {
 
     echo -e "${BLUE}Flattening and preparing ${prefix}...${NC}"
     
-    # Prune existing keys for this prefix to ensure a clean state
-    if [[ -n "$prefix" ]]; then
-        echo -n "Pruning existing ${prefix} config... "
-        # Use regex to match the prefix followed by a dot
-        mongosh --quiet "$DB_NAME" --eval "db.config.deleteMany({_id: /^${prefix//./\\.}(\.|$)/})" > /dev/null
-        echo -e "${GREEN}Done${NC}"
-    fi
-
     # Use jq to build all the MongoDB commands at once
     local batch_script
     batch_script=$(echo "$content" | jq -r --arg prefix "$prefix" '
@@ -151,6 +143,11 @@ flatten_and_sync() {
 
 sync_configs() {
     echo -e "${BLUE}Syncing Configurations (Deep Flattening)...${NC}"
+
+    # Global Prune of UI branches to prevent parent-child collisions
+    echo -n "Pruning existing UI configurations... "
+    mongosh --quiet "$DB_NAME" --eval "db.config.deleteMany({_id: /^(ui\.device|ui\.index|ui\.filters|ui\.overview)(\.|$)/})" > /dev/null
+    echo -e "${GREEN}Done${NC}"
     
     files=$(fetch_repo_files "config")
     for file in $files; do
