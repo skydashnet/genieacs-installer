@@ -194,6 +194,7 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         --full) MODE="full" ;;
         --vparams) MODE="vparams" ;;
+        --index-type) INDEX_TYPE="$2"; shift ;;
         --acs-url) ACS_URL="$2"; shift ;;
         --help) usage; exit 0 ;;
         *) echo "Unknown parameter: $1"; usage; exit 1 ;;
@@ -213,8 +214,11 @@ if [[ "$MODE" == "interactive" ]]; then
         2) MODE="vparams" ;;
         *) exit 0 ;;
     esac
+fi
 
-    if [[ "$MODE" == "full" ]]; then
+# Prompt for Index Type if not specified and doing a full sync
+if [[ "$MODE" == "full" && "$INDEX_TYPE" == "both" ]]; then
+    if [[ -t 0 ]]; then
         echo -e "\n${BLUE}Select Index Page Layout:${NC}"
         echo "1) WAN IP (index-page-wanip.yaml)"
         echo "2) WAN PPP (index-page-wanppp.yaml)"
@@ -224,6 +228,9 @@ if [[ "$MODE" == "interactive" ]]; then
             2) INDEX_TYPE="wanppp" ;;
             *) INDEX_TYPE="wanip" ;; # Default
         esac
+    else
+        # Non-interactive default
+        INDEX_TYPE="wanip"
     fi
 fi
 
