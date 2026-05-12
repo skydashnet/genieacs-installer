@@ -151,16 +151,6 @@ sync_configs() {
     
     files=$(fetch_repo_files "config")
     for file in $files; do
-        echo -e "${BLUE}Processing ${file}...${NC}"
-        content=$(curl -sL "${GITHUB_RAW_URL}/config/${file}")
-        
-        # If it's a YAML file, convert to JSON for jq
-        if [[ $file == *.yaml || $file == *.yml ]]; then
-            # We must set NODE_PATH so node can find the global js-yaml
-            GLOBAL_NODE_MODULES=$(npm root -g)
-            content=$(echo "$content" | NODE_PATH="$GLOBAL_NODE_MODULES" node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
-        fi
-
         # Determine prefix based on filename
         prefix=""
         case ${file%.*} in
@@ -178,7 +168,18 @@ sync_configs() {
             overview) prefix="ui.overview.groups" ;;
             chart) prefix="ui.overview.charts" ;;
             config) prefix="" ;; 
+            *) continue ;; # Skip unknown files
         esac
+
+        echo -e "${BLUE}Processing ${file}...${NC}"
+        content=$(curl -sL "${GITHUB_RAW_URL}/config/${file}")
+        
+        # If it's a YAML file, convert to JSON for jq
+        if [[ $file == *.yaml || $file == *.yml ]]; then
+            # We must set NODE_PATH so node can find the global js-yaml
+            GLOBAL_NODE_MODULES=$(npm root -g)
+            content=$(echo "$content" | NODE_PATH="$GLOBAL_NODE_MODULES" node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
+        fi
 
         flatten_and_sync "$content" "$prefix"
     done
