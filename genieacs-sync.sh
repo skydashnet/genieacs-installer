@@ -135,10 +135,10 @@ sync_configs() {
         name="${file%.*}"
         target_name="$name"
         case $name in
-            device-page) target_name="device_page" ;;
-            filter) target_name="filter_page" ;;
-            overview) target_name="overview_page" ;;
-            index-page-wanip|index-page-wanppp) target_name="index_page" ;;
+            device-page) target_name="ui.device_page" ;;
+            filter) target_name="ui.filter_page" ;;
+            overview) target_name="ui.overview_page" ;;
+            index-page-wanip|index-page-wanppp) target_name="ui.index_page" ;;
         esac
         
         sync_item "config" "$target_name" "${GITHUB_RAW_URL}/config/${file}" "unused"
