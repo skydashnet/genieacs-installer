@@ -11,7 +11,7 @@ REPO_OWNER="EtherGig"
 REPO_NAME="genieacs-installer"
 BRANCH="master"
 NBI_URL="http://localhost:7557"
-UI_URL="http://localhost:3000"
+DB_NAME="genieacs"
 GITHUB_RAW_URL="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}"
 GITHUB_API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents"
 
@@ -61,25 +61,23 @@ sync_item() {
         content=$(echo "$content" | sed "s|{{ACS_URL}}|$ACS_URL|g")
     fi
 
-    # Use different endpoint for config
-    local target_url="${NBI_URL}/${type}/${name}"
-    local body="$content"
-    
-    if [[ "$type" == "config" ]]; then
-        target_url="${UI_URL}/api/config/${name}"
-        # Wrap content in a JSON object with a "value" key
-        # We use jq to safely escape the content
-        body=$(jq -n --arg val "$content" '{"value": $val}')
-    fi
-
-    response=$(curl -s -X PUT "$target_url" \
-        --header "Content-Type: application/json" \
-        --data-binary "$body")
-    
-    if [[ -n "$response" ]]; then
-        echo -e "${RED}Response: $response${NC}"
+    # Provisions and VParams go to NBI
+    if [[ "$type" != "config" ]]; then
+        response=$(curl -s -X PUT "${NBI_URL}/${type}/${name}" \
+            --header "Content-Type: application/json" \
+            --data-binary "$content")
+        
+        if [[ -n "$response" ]]; then
+            echo -e "${RED}Response: $response${NC}"
+        else
+            echo -e "${GREEN}Done${NC}"
+        fi
     else
-        echo -e "${GREEN}Done${NC}"
+        # Config items go directly to MongoDB
+        # Wrap in quotes and escape for JS
+        js_val=$(jq -n --arg val "$content" '$val')
+        mongosh --quiet "$DB_NAME" --eval "db.config.updateOne({_id: '$name'}, {\$set: {value: $js_val}}, {upsert: true})" > /dev/null
+        echo -e "${GREEN}Done (DB)${NC}"
     fi
 }
 
@@ -127,18 +125,9 @@ sync_configs() {
                 value=$(echo "$content" | jq -c ".\"$key\"")
                 echo -n "Syncing config/${key}... "
                 
-                # Wrap in {"value": ...} for UI API
-                body=$(jq -n --argjson val "$value" '{"value": $val}')
-                
-                response=$(curl -s -X PUT "${UI_URL}/api/config/${key}" \
-                    --header "Content-Type: application/json" \
-                    --data-binary "$body")
-                
-                if [[ -n "$response" ]]; then
-                    echo -e "${RED}Response: $response${NC}"
-                else
-                    echo -e "${GREEN}Done${NC}"
-                fi
+                # Direct DB update for bulk settings
+                mongosh --quiet "$DB_NAME" --eval "db.config.updateOne({_id: '$key'}, {\$set: {value: $value}}, {upsert: true})" > /dev/null
+                echo -e "${GREEN}Done (DB)${NC}"
             done
             continue
         fi
