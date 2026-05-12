@@ -118,8 +118,15 @@ flatten_and_sync() {
 
     echo -e "${BLUE}Flattening and preparing ${prefix}...${NC}"
     
+    # Prune existing keys for this prefix to ensure a clean state
+    if [[ -n "$prefix" ]]; then
+        echo -n "Pruning existing ${prefix} config... "
+        # Use regex to match the prefix followed by a dot
+        mongosh --quiet "$DB_NAME" --eval "db.config.deleteMany({_id: /^${prefix//./\\.}(\.|$)/})" > /dev/null
+        echo -e "${GREEN}Done${NC}"
+    fi
+
     # Use jq to build all the MongoDB commands at once
-    # We generate a single string of multiple db.config.updateOne calls
     local batch_script
     batch_script=$(echo "$content" | jq -r --arg prefix "$prefix" '
         tostream | select(length > 1) | 
