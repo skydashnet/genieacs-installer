@@ -175,7 +175,7 @@ sync_configs() {
                 ;;
             index-page) prefix="ui.index" ;;
             filter) prefix="ui.filters" ;;
-            overview) prefix="ui.overview.groups" ;;
+            overview) prefix="ui.overview" ;;
             chart) prefix="ui.overview.charts" ;;
             config) prefix="" ;; 
         esac
@@ -255,4 +255,8 @@ case $MODE in
         ;;
 esac
 
-echo -e "${GREEN}Sync Complete!${NC}"
+# Restart UI service to refresh cache
+echo -e "\n${BLUE}Restarting GenieACS UI to apply changes...${NC}"
+systemctl restart genieacs-ui 2>/dev/null || echo -e "${RED}Warning: Could not restart genieacs-ui service (try running as root)${NC}"
+
+echo -e "\n${GREEN}Sync Complete!${NC}"
