@@ -123,6 +123,7 @@ flatten_and_sync() {
     batch_script=$(echo "$content" | jq -r --arg prefix "$prefix" '
         tostream | select(length > 1) | 
         { path: ( [.[0][] | tostring] | join(".") ), value: .[1] } |
+        select(.value != null) |
         "db.config.updateOne({_id: " + (($prefix + (if $prefix == "" then "" else "." end) + .path) | @json) + "}, {$set: {value: " + (.value | @json) + "}}, {upsert: true});"
     ')
 
