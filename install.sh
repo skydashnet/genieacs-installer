@@ -2,6 +2,7 @@
 
 # GenieACS Automated Installer for Debian
 # Installs Node.js, MongoDB, GenieACS and setups Systemd services
+# git clone https://github.com/ethergig/genieacs-installer.git && cd genieacs-installer
 
 set -e
 
