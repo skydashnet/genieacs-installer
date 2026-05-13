@@ -40,6 +40,18 @@ for cmd in curl jq; do
     fi
 done
 
+# --- Seeding Guard ---
+# Check if GenieACS is seeded (has at least one user)
+if command -v mongosh &> /dev/null; then
+    USER_COUNT=$(mongosh "$DB_NAME" --quiet --eval "db.users.countDocuments()" 2>/dev/null || echo "1")
+    if [[ "$USER_COUNT" == "0" ]]; then
+        echo -e "${RED}Error: GenieACS has not been initialized yet.${NC}"
+        echo -e "${BLUE}Please complete the initial wizard in the Web UI first (usually at http://SERVER_IP:3000).${NC}"
+        echo -e "${BLUE}This ensures that your custom configurations are not overwritten by the default seeding process.${NC}"
+        exit 1
+    fi
+fi
+
 # --- Helper Functions ---
 
 fetch_repo_files() {
