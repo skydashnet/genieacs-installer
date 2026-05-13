@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# GenieACS Sync Utility
-# Synchronizes configuration from GitHub to local GenieACS instance.
+# GenieACS Import Utility
+# Imports configuration from GitHub to local GenieACS instance.
 # WARNING: This script will OVERWRITE local configurations to match the repository.
 
 set -e
@@ -27,7 +27,7 @@ show_header() {
     echo -e "${BLUE}|   __|_   _|  |  |   __| __  |${NC}   __|     |   __|"
     echo -e "${BLUE}|   __| | | |     |   __|    -|${NC}  |  |-   -|  |  |"
     echo -e "${BLUE}|_____| |_| |__|__|_____|__|__|${NC}_____|_____|_____|"
-    echo -e "                   GenieACS Configuration Sync\n"
+    echo -e "                   GenieACS Configuration Import\n"
 }
 
 show_header
@@ -35,8 +35,8 @@ show_header
 usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
-    echo "  --full           Full synchronization (Provisions + VParams + Config)"
-    echo "  --vparams        Sync only Virtual Parameters"
+    echo "  --full           Full Import (Provisions + VParams + Config)"
+    echo "  --vparams        Import only Virtual Parameters"
     echo "  --acs-url <url>  Set ACS URL (domain or IP) for inform.js"
     echo "  --help           Show this help"
     echo ""
@@ -70,13 +70,13 @@ fetch_repo_files() {
     curl -s "${GITHUB_API_URL}/${path}?ref=${BRANCH}" | jq -r '.[] | select(.type=="file") | .name'
 }
 
-sync_item() {
+import_item() {
     local type=$1    # provisions, virtual_parameters, config
     local name=$2
     local url=$3
     local content_type=$4
 
-    echo -n "Syncing ${type}/${name}... "
+    echo -n "Importing ${type}/${name}... "
     content=$(curl -sL "$url")
     
     # Inject ACS_URL into inform provision
@@ -113,29 +113,31 @@ prune_all() {
     done
 }
 
-# --- Sync Logic ---
+# --- Import Logic ---
 
-sync_provisions() {
+import_provisions() {
+    echo -e "\n${BLUE}Importing Provisions...${NC}"
     prune_all "provisions"
     files=$(fetch_repo_files "provision-script")
     for file in $files; do
         if [[ $file == *.js ]]; then
-            sync_item "provisions" "${file%.js}" "${GITHUB_RAW_URL}/provision-script/${file}" "application/javascript"
+            import_item "provisions" "${file%.js}" "${GITHUB_RAW_URL}/provision-script/${file}" "application/javascript"
         fi
     done
 }
 
-sync_vparams() {
+import_vparams() {
+    echo -e "\n${BLUE}Importing Virtual Parameters...${NC}"
     prune_all "virtual_parameters"
     files=$(fetch_repo_files "virtual-params")
     for file in $files; do
         if [[ $file == *.js ]]; then
-            sync_item "virtual_parameters" "${file%.js}" "${GITHUB_RAW_URL}/virtual-params/${file}" "application/javascript"
+            import_item "virtual_parameters" "${file%.js}" "${GITHUB_RAW_URL}/virtual-params/${file}" "application/javascript"
         fi
     done
 }
 
-flatten_and_sync() {
+flatten_and_import() {
     local content=$1
     local prefix=$2
 
@@ -150,7 +152,7 @@ flatten_and_sync() {
     ')
 
     if [[ -n "$batch_script" ]]; then
-        echo -n "Syncing ${prefix} batch to MongoDB... "
+        echo -n "Importing ${prefix} batch to MongoDB... "
         # Use a temporary file for the batch script to avoid shell piping issues
         local temp_script="/tmp/genieacs_batch_$(date +%s).js"
         echo "$batch_script" > "$temp_script"
@@ -164,8 +166,8 @@ flatten_and_sync() {
     fi
 }
 
-sync_configs() {
-    echo -e "${BLUE}Syncing Configurations (Deep Flattening)...${NC}"
+import_configs() {
+    echo -e "\n${BLUE}Importing Configurations (Deep Flattening)...${NC}"
 
     # Global Prune of UI branches to prevent parent-child collisions
     echo -n "Pruning existing UI configurations... "
@@ -204,7 +206,7 @@ sync_configs() {
             content=$(echo "$content" | NODE_PATH="$GLOBAL_NODE_MODULES" node -e "const yaml = require('js-yaml'); const fs = require('fs'); console.log(JSON.stringify(yaml.load(fs.readFileSync(0, 'utf8'))))")
         fi
 
-        flatten_and_sync "$content" "$prefix"
+        flatten_and_import "$content" "$prefix"
     done
 }
 
@@ -240,7 +242,7 @@ if [[ "$MODE" == "interactive" ]]; then
     esac
 fi
 
-# Prompt for Index Type if not specified and doing a full sync
+# Prompt for Index Type if not specified and doing a full import
 if [[ "$MODE" == "full" && "$INDEX_TYPE" == "both" ]]; then
     if [[ -t 0 ]]; then
         echo -e "\n${BLUE}Select Index Page Layout:${NC}"
@@ -270,12 +272,12 @@ fi
 
 case $MODE in
     full)
-        sync_provisions
-        sync_vparams
-        sync_configs
+        import_provisions
+        import_vparams
+        import_configs
         ;;
     vparams)
-        sync_vparams
+        import_vparams
         ;;
 esac
 
@@ -283,4 +285,4 @@ esac
 echo -e "\n${BLUE}Restarting GenieACS UI to apply changes...${NC}"
 systemctl restart genieacs-ui 2>/dev/null || echo -e "${RED}Warning: Could not restart genieacs-ui service (try running as root)${NC}"
 
-echo -e "\n${GREEN}Sync Complete!${NC}"
+echo -e "\n${GREEN}Import Complete!${NC}"

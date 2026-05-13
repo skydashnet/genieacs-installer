@@ -35,11 +35,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Parse arguments
-RUN_SYNC="ask"
+RUN_IMPORT="ask"
 for arg in "$@"; do
     case $arg in
-        --no-sync) RUN_SYNC="false" ;;
-        --sync) RUN_SYNC="true" ;;
+        --no-import) RUN_IMPORT="false" ;;
+        --import) RUN_IMPORT="true" ;;
     esac
 done
 
@@ -123,7 +123,7 @@ $LOG_DIR/*.log $LOG_DIR/*.yaml {
 }
 EOF
 
-# 9. Initial Configuration Sync
+# 9. Initial Configuration Import
 echo -e "${BLUE}Waiting for GenieACS NBI to start...${NC}"
 until curl -s http://localhost:7557/ > /dev/null; do
     echo -n "."
@@ -131,24 +131,24 @@ until curl -s http://localhost:7557/ > /dev/null; do
 done
 echo ""
 
-if [[ "$RUN_SYNC" == "ask" ]]; then
-    read -p "Do you want to sync configuration from GitHub now? [Y/n]: " sync_choice
-    if [[ "$sync_choice" =~ ^[Nn]$ ]]; then
-        RUN_SYNC="false"
+if [[ "$RUN_IMPORT" == "ask" ]]; then
+    read -p "Do you want to import configuration from GitHub now? [Y/n]: " import_choice
+    if [[ "$import_choice" =~ ^[Nn]$ ]]; then
+        RUN_IMPORT="false"
     else
-        RUN_SYNC="true"
+        RUN_IMPORT="true"
     fi
 fi
 
-if [[ "$RUN_SYNC" == "true" ]]; then
-    echo -e "${BLUE}Starting configuration sync...${NC}"
-    ./genieacs-sync.sh --full
+if [[ "$RUN_IMPORT" == "true" ]]; then
+    echo -e "${BLUE}Starting configuration import...${NC}"
+    ./genieacs-import.sh --full
 else
-    echo -e "${BLUE}Skipping configuration sync. You can run it later using ./genieacs-sync.sh${NC}"
+    echo -e "${BLUE}Skipping configuration import. You can run it later using ./genieacs-import.sh${NC}"
 fi
 
 echo -e "${GREEN}GenieACS Installation and Configuration Complete!${NC}"
 echo -e "UI is accessible at: http://YOUR_IP:3000"
 echo -e "CWMP is listening at: http://YOUR_IP:7547"
 echo -e ""
-echo -e "To sync your configuration later, run: ./genieacs-sync.sh"
+echo -e "To import your configuration later, run: ./genieacs-import.sh"
