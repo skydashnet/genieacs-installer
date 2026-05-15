@@ -11,7 +11,10 @@
   parameter: VirtualParameters.PPPUsername
   type: "'string'"
 - label: "'PPP IP'"
-  parameter: VirtualParameters.PPPExtIPAddress
+  parameter: VirtualParameters.IP-WANPPP
+  type: "'string'"
+- label: "'TR069 IP'"
+  parameter: VirtualParameters.IP-TR069
   type: "'string'"
 - label: "'Software Version'"
   parameter: InternetGatewayDevice.DeviceInfo.SoftwareVersion

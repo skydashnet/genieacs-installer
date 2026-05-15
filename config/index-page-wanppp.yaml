@@ -62,6 +62,8 @@
   type: "'tags'"
   unsortable: false
   writable: true
+- label: "'Serial number'"
+  parameter: DeviceID.SerialNumber
 - label: "'Registered'"
   parameter: Events.Registered
 - element: "'span.inform'"
@@ -78,5 +80,3 @@
   parameter: InternetGatewayDevice.DeviceInfo.HardwareVersion
 - label: "'SW version'"
   parameter: InternetGatewayDevice.DeviceInfo.SoftwareVersion
-- label: "'Serial number'"
-  parameter: DeviceID.SerialNumber
