@@ -14,6 +14,7 @@
     - InternetGatewayDevice.DeviceInfo.HardwareVersion
     - InternetGatewayDevice.DeviceInfo.SoftwareVersion
     - InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries
+    - VirtualParameters.Device-MAC
     - DeviceID.Manufacturer
     - DeviceID.SerialNumber
 - label: "'PPP Username'"
@@ -49,6 +50,8 @@
     attributes:
       href: "'http://' || VirtualParameters.IP-TR069"
       target: "'_blank'"
+- label: "'Device MAC'"
+  parameter: VirtualParameters.Device-MAC
 - label: "'Stations'"
   parameter: VirtualParameters.TotalStations
 - label: "'Host'"

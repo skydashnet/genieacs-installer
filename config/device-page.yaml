@@ -29,6 +29,7 @@
         - VirtualParameters.KnownManufacturer
         - VirtualParameters.KnownProductClass
         - InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType
+        - VirtualParameters.Device-MAC
 - type: "'parameter-list'"
   parameters:
     - element: "'span.inform'"
@@ -60,6 +61,8 @@
       parameter: DeviceID.SerialNumber
     - label: "'Access Type'"
       parameter: InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType
+    - label: "'Device MAC'"
+      parameter: VirtualParameters.Device-MAC
     - label: "'Device Uptime'"
       parameter: VirtualParameters.DeviceUptime
     - element: "'span.inform'"

@@ -10,6 +10,7 @@
     - VirtualParameters.WANBridge
     - VirtualParameters.TotalStations
     - InternetGatewayDevice.DeviceInfo.SoftwareVersion
+    - VirtualParameters.Device-MAC
     - InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries
 - label: "'Tags'"
   parameter: Tags
@@ -20,6 +21,8 @@
   type: "'device-link'"
   components:
     - type: "'parameter'"
+- label: "'Device MAC'"
+  parameter: VirtualParameters.Device-MAC
 - chart: "'optical-rx-power-short'"
   type: "'overview-dot'"
 - label: "'RX dBm'"
