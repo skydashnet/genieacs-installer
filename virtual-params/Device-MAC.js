@@ -10,7 +10,19 @@ for (let i = 1; i <= 4; i++) {
   }
 }
 
-// 2. If not found, check LAN Ethernet Interfaces 1 through 4
+// 2. If not found, check WAN IP Connections 1 through 4
+if (!m) {
+  for (let i = 1; i <= 4; i++) {
+    let path = "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection." + i + ".MACAddress";
+    let p = declare(path, {value: Date.now()});
+    if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
+      m = p.value[0];
+      break;
+    }
+  }
+}
+
+// 3. If not found, check LAN Ethernet Interfaces 1 through 4
 if (!m) {
   for (let i = 1; i <= 4; i++) {
     let path = "InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig." + i + ".MACAddress";
