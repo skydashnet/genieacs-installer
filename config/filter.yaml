@@ -16,6 +16,9 @@
 - label: "'TR069 IP'"
   parameter: VirtualParameters.IP-TR069
   type: "'string'"
+- label: "'Device MAC'"
+  parameter: VirtualParameters.DEVICE-MAC
+  type: "'string'"
 - label: "'Software Version'"
   parameter: InternetGatewayDevice.DeviceInfo.SoftwareVersion
   type: "'string'"
