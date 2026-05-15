@@ -39,6 +39,16 @@
     attributes:
       href: "'http://' || VirtualParameters.IP-WANPPP"
       target: "'_blank'"
+- label: "'TR069 IP'"
+  parameter: VirtualParameters.IP-TR069
+  type: "'container'"
+  components:
+    type: VirtualParameters.IP-TR069
+  element:
+    tag: "'a'"
+    attributes:
+      href: "'http://' || VirtualParameters.IP-TR069"
+      target: "'_blank'"
 - label: "'Stations'"
   parameter: VirtualParameters.TotalStations
 - label: "'Host'"
