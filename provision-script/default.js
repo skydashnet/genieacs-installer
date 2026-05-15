@@ -4,7 +4,7 @@ const fiveMin = Date.now() - 300000;
 // Refresh basic parameters hourly
 declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { path: hourly, value: hourly });
 declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", { path: hourly, value: hourly });
-declare("VirtualParameters.DEVICE-MAC", { path: hourly, value: hourly });
+declare("VirtualParameters.Device-MAC", { path: hourly, value: hourly });
 
 
 //vparam
