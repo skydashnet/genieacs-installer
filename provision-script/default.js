@@ -4,6 +4,7 @@ const fiveMin = Date.now() - 300000;
 // Refresh basic parameters hourly
 declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { path: hourly, value: hourly });
 declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", { path: hourly, value: hourly });
+declare("VirtualParameters.DEVICE-MAC", { path: hourly, value: hourly });
 
 
 //vparam
@@ -44,7 +45,6 @@ declare("VirtualParameters.LoginSuperPass", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.DeviceInfo.UpTime", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.ManagementServer.ConnectionRequestURL", { path: fiveMin, value: fiveMin });
 //WAN
-declare("VirtualParameters.WAN-MAC", { path: hourly, value: hourly });
 declare("InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType", { path: hourly, value: hourly });
 declare("InternetGatewayDevice.WANDevice.1.WANConnectionNumberOfEntries", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*", { path: fiveMin, value: fiveMin });
