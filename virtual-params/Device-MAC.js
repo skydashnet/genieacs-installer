@@ -1,69 +1,23 @@
 let m = "";
 
-// 1. Check WAN PPP Connections 1 through 4
-for (let i = 1; i <= 4; i++) {
-  let path = "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection." + i + ".MACAddress";
-  let p = declare(path, {value: Date.now()});
-  if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
-    m = p.value[0];
-    break;
-  }
-}
+const paths = [
+  "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.MACAddress",
+  "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.*.MACAddress",
+  "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANPPPConnection.1.MACAddress",
+  "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANIPConnection.1.MACAddress",
+  "InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.*.MACAddress",
+  "InternetGatewayDevice.LANDevice.1.LANHostConfigManagement.MACAddress"
+];
 
-// 2. If not found, check WAN IP Connections 1 through 4
-if (!m) {
-  for (let i = 1; i <= 4; i++) {
-    let path = "InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection." + i + ".MACAddress";
-    let p = declare(path, {value: Date.now()});
-    if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
-      m = p.value[0];
+for (let path of paths) {
+  let d = declare(path, {value: Date.now()});
+  for (let item of d) {
+    if (item.value && item.value[0] && item.value[0] !== "00:00:00:00:00:00") {
+      m = item.value[0];
       break;
     }
   }
-}
-
-// 3. If not found, check WAN Connection Devices 1 through 4 (Alternate structure)
-if (!m) {
-  for (let i = 1; i <= 4; i++) {
-    let path = "InternetGatewayDevice.WANDevice.1.WANConnectionDevice." + i + ".WANPPPConnection.1.MACAddress";
-    let p = declare(path, {value: Date.now()});
-    if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
-      m = p.value[0];
-      break;
-    }
-  }
-}
-
-// 4. If not found, check WAN Connection Devices 1 through 4 (IP Alternate structure)
-if (!m) {
-  for (let i = 1; i <= 4; i++) {
-    let path = "InternetGatewayDevice.WANDevice.1.WANConnectionDevice." + i + ".WANIPConnection.1.MACAddress";
-    let p = declare(path, {value: Date.now()});
-    if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
-      m = p.value[0];
-      break;
-    }
-  }
-}
-
-// 5. If not found, check LAN Ethernet Interfaces 1 through 4
-if (!m) {
-  for (let i = 1; i <= 4; i++) {
-    let path = "InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig." + i + ".MACAddress";
-    let p = declare(path, {value: Date.now()});
-    if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
-      m = p.value[0];
-      break;
-    }
-  }
-}
-
-// 3. Final fallback: LAN Host Management MAC
-if (!m) {
-  let fallback = declare("InternetGatewayDevice.LANDevice.1.LANHostConfigManagement.MACAddress", {value: Date.now()});
-  if (fallback.value && fallback.value[0] && fallback.value[0] !== "00:00:00:00:00:00") {
-    m = fallback.value[0];
-  }
+  if (m) break;
 }
 
 return {writable: false, value: [m, "xsd:string"]};
