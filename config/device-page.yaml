@@ -181,6 +181,115 @@
       components:
         - "'📥 WAN IP'"
 - filter: >
+          VirtualParameters.WANParameterModel = "XZTE"
+  type: "'container'"
+  components:
+    - chart: "'online-short'"
+      type: "'overview-dot'"
+    - type: "'summon-button'"
+      parameters:
+        - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.3.WANIPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+- filter: >
           VirtualParameters.WANParameterModel = "XHW"
   type: "'container'"
   components:
@@ -748,6 +857,115 @@
       type: "'container'"
       components:
         - "'📥 WAN PPP'"
+- filter: >
+          VirtualParameters.WANParameterModel = "XZTE"
+  type: "'container'"
+  components:
+    - chart: "'online-short'"
+      type: "'overview-dot'"
+    - type: "'summon-button'"
+      parameters:
+        - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.3.WANPPPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
+    - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANPPPConnection
+      type: "'parameter-table'"
+      childParameters:
+        - label: "'Name'"
+          parameter: Name
+        - label: "'MAC Address'"
+          parameter: MACAddress
+        - label: "'Mode'"
+          parameter: AddressingType
+        - label: "'IP Address'"
+          parameter: ExternalIPAddress
+        - label: "'Subnet Mask'"
+          parameter: SubnetMask
+        - label: "'Gateway'"
+          parameter: DefaultGateway
+        - label: "'DNS'"
+          parameter: DNSServers
+        - label: "'NAT'"
+          parameter: NATEnabled
+        - label: "'Type'"
+          parameter: ConnectionType
+        - label: "'VLAN'"
+          parameter: X_ZTE-COM_VLANID
+        - label: "'Service'"
+          parameter: X_ZTE-COM_ServiceList
 - filter: >
           VirtualParameters.WANParameterModel = "XHW"
   type: "'container'"
