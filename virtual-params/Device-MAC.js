@@ -1,7 +1,7 @@
 let m = "";
 
-// 1. Check WAN PPP Connections (1 through 4)
-let wanMacs = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.[1,2,3,4].MACAddress", {value: Date.now()});
+// 1. Check WAN PPP Connections
+let wanMacs = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.*.MACAddress", {value: Date.now()});
 for (let p of wanMacs) {
   if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
     m = p.value[0];
@@ -9,9 +9,9 @@ for (let p of wanMacs) {
   }
 }
 
-// 2. If not found, check LAN Ethernet Interfaces (1 through 4)
+// 2. If not found, check LAN Ethernet Interfaces
 if (!m) {
-  let lanMacs = declare("InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.[1,2,3,4].MACAddress", {value: Date.now()});
+  let lanMacs = declare("InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.*.MACAddress", {value: Date.now()});
   for (let p of lanMacs) {
     if (p.value && p.value[0] && p.value[0] !== "00:00:00:00:00:00") {
       m = p.value[0];
