@@ -238,9 +238,9 @@ apply_branding() {
             echo -e "${GREEN}Font already applied.${NC}"
         fi
 
-        # 2. Patch Branding (Prepending to top of file)
+        # 2. Patch Branding (Appending to end of file)
         if ! grep -q "Customized by EtherGig" "$css_file"; then
-            sed -i '1i .version::after { content: " | Customized by EtherGig" !important; display: inline !important; }' "$css_file"
+            echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; }' >> "$css_file"
             echo -e "${GREEN}Branding applied to $(basename "$css_file")${NC}"
         else
             echo -e "${GREEN}Branding already applied.${NC}"
