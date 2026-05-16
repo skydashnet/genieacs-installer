@@ -282,6 +282,12 @@ span.tag { background-color: #333 !important; background-image: none !important;
 button.primary { background-color: #00bfaf !important; color: #111 !important; }
 button.primary:hover { background-color: #008f83 !important; }
 .CodeMirror { border-color: #333 !important; }
+.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }
+.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }
+.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }
+.drawer .parameter, .drawer .value { color: #00bfaf !important; }
+.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }
+.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }
 ' >> "$css_file"
         echo -e "${GREEN}Dark mode applied successfully.${NC}"
     fi
