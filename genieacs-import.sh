@@ -242,7 +242,8 @@ apply_branding() {
     local js_file=$(ls "$public_dir"/app-*.js 2>/dev/null | head -n 1)
     if [[ -f "$js_file" ]]; then
         if ! grep -q "Customized by EtherGig" "$js_file"; then
-            echo '(function(){const o=new MutationObserver((m)=>{if(document.body.innerText.includes("v1.2.")){const e=document.querySelector(".version")||document.querySelector("small");if(e&&!e.dataset.branded){e.innerHTML+=" | Customized by EtherGig";e.dataset.branded="true"}}});o.observe(document.body,{childList:true,subtree:true})})();' >> "$js_file"
+            # More robust branding script
+            echo '(function(){const i=()=>{const e=document.querySelector(".version");if(e&&!e.innerHTML.includes("Customized")){e.innerHTML+=" | Customized by EtherGig"}};new MutationObserver(i).observe(document.documentElement,{childList:true,subtree:true});i()})();' >> "$js_file"
             echo -e "${GREEN}Branding applied to $(basename "$js_file")${NC}"
         else
             echo -e "${GREEN}Branding already applied.${NC}"
