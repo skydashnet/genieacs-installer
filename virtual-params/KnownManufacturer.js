@@ -4,7 +4,7 @@ const knownManufacturers = [
     "CMDC",
     "GGCL",
     "Huawei Technologies Co., Ltd",
-    "ZIONCOM",
+    "Fiberhome",
     "ZTE"
   ];
 

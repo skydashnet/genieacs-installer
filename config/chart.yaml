@@ -220,10 +220,10 @@ manufacturer:
       color: "'#ffffff'"
       filter: VirtualParameters.KnownManufacturer = "Other"
       label: "'Other'"
-    ZIONCOM:
+    Fiberhome:
       color: "'#00214a'"
-      filter: VirtualParameters.KnownManufacturer = "ZIONCOM"
-      label: "'ZIONCOM'"
+      filter: VirtualParameters.KnownManufacturer = "Fiberhome"
+      label: "'Fiberhome'"
     ZTE:
       color: "'#e0a102'"
       filter: VirtualParameters.KnownManufacturer = "ZTE"
