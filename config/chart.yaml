@@ -208,26 +208,54 @@ manufacturer:
       color: "'#0266e0'"
       filter: VirtualParameters.KnownManufacturer = "CMDC"
       label: "'CMDC'"
+    FiberHome:
+      color: "'#00214a'"
+      filter: VirtualParameters.KnownManufacturer = "FiberHome"
+      label: "'FiberHome'"
     GGCL:
       color: "'#0b4a00'"
       filter: VirtualParameters.KnownManufacturer = "GGCL"
       label: "'GGCL'"
+    HWTC:
+      color: "'#9942f5'"
+      filter: VirtualParameters.KnownManufacturer = "HWTC"
+      label: "'HWTC'"
     Huawei:
       color: "'#4287f5'"
       filter: VirtualParameters.KnownManufacturer = "Huawei Technologies Co., Ltd"
       label: "'Huawei'"
-    Other:
-      color: "'#ffffff'"
-      filter: VirtualParameters.KnownManufacturer = "Other"
-      label: "'Other'"
-    Fiberhome:
-      color: "'#00214a'"
-      filter: VirtualParameters.KnownManufacturer = "Fiberhome"
-      label: "'Fiberhome'"
+    NNSC:
+      color: "'#4254f5'"
+      filter: VirtualParameters.KnownManufacturer = "NNSC"
+      label: "'NNSC'"
+    XSFG:
+      color: "'#42f5f2'"
+      filter: VirtualParameters.KnownManufacturer = "XSFG"
+      label: "'XSFG'"
+    YEKF:
+      color: "'#f542e5'"
+      filter: VirtualParameters.KnownManufacturer = "YEKF"
+      label: "'YEKF'"
+    ZICG:
+      color: "'#f54278'"
+      filter: VirtualParameters.KnownManufacturer = "ZICG"
+      label: "'ZICG'"
     ZTE:
       color: "'#e0a102'"
       filter: VirtualParameters.KnownManufacturer = "ZTE"
       label: "'ZTE'"
+    ZTEG:
+      color: "'#f5b642'"
+      filter: VirtualParameters.KnownManufacturer = "ZTEG"
+      label: "'ZTEG'"
+    ZXIC:
+      color: "'#42f545'"
+      filter: VirtualParameters.KnownManufacturer = "ZXIC"
+      label: "'ZXIC'"
+    zz_Other:
+      color: "'#ffffff'"
+      filter: VirtualParameters.KnownManufacturer = "Other"
+      label: "'Other'"
 product-class:
   label: "'Product Class'"
   slices:

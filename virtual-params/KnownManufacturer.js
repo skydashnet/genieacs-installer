@@ -2,11 +2,18 @@ let result = "Other"
 const knownManufacturers = [
     "CIOT",
     "CMDC",
+    "FiberHome",
     "GGCL",
+    "HWTC",
     "Huawei Technologies Co., Ltd",
-    "Fiberhome",
-    "ZTE"
-  ];
+    "NNSC",
+    "XSFG",
+    "YEKF",
+    "ZICG",
+    "ZTE",
+    "ZTEG",
+    "ZXIC"
+];
 
 let manu = declare("DeviceID.Manufacturer", {value: Date.now()});
 if(knownManufacturers.includes(manu.value[0])){
