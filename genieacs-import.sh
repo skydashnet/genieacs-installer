@@ -38,6 +38,7 @@ usage() {
     echo "  --full           Full Import (Provisions + VParams + Config)"
     echo "  --vparams        Import only Virtual Parameters"
     echo "  --acs-url <url>  Set ACS URL (domain or IP) for inform.js"
+    echo "  --dark           Apply Dark Mode theme"
     echo "  --help           Show this help"
     echo ""
     echo "If no options are provided, the script runs in interactive mode."
@@ -250,11 +251,48 @@ apply_branding() {
     fi
 }
 
+apply_dark_mode() {
+    local public_dir=$1
+    echo -e "\n${BLUE}Applying Dark Mode theme...${NC}"
+    local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
+    if [[ -f "$css_file" ]]; then
+        if ! grep -q "DARK MODE PATCH" "$css_file"; then
+            echo '
+/* DARK MODE PATCH */
+:root {
+  --color1: #333 !important;
+  --color2: #444 !important;
+  --color3: #1a1a1a !important;
+  --color4: #00bfaf !important;
+  --color5: #eee !important;
+  --disabled: #888 !important;
+}
+body, #content-wrapper { background-color: #111 !important; color: #eee !important; }
+#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }
+#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }
+table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }
+table.table.highlight > tbody > tr:hover { background-color: #222 !important; }
+input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }
+.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }
+.CodeMirror-linenumber { color: #666 !important; }
+.pie-chart > svg > path { stroke: #111 !important; }
+.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }
+.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }
+.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }
+' >> "$css_file"
+            echo -e "${GREEN}Dark mode applied successfully.${NC}"
+        else
+            echo -e "${GREEN}Dark mode already applied.${NC}"
+        fi
+    fi
+}
+
 # --- Main ---
 
 MODE="interactive"
 INDEX_TYPE="both" # Default to both if not specified
 ACS_URL=""
+DARK_MODE=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -262,6 +300,7 @@ while [[ "$#" -gt 0 ]]; do
         --vparams) MODE="vparams" ;;
         --index-type) INDEX_TYPE="$2"; shift ;;
         --acs-url) ACS_URL="$2"; shift ;;
+        --dark) DARK_MODE=true ;;
         --help) usage; exit 0 ;;
         *) echo "Unknown parameter: $1"; usage; exit 1 ;;
     esac
@@ -280,6 +319,10 @@ if [[ "$MODE" == "interactive" ]]; then
         2) MODE="vparams" ;;
         *) exit 0 ;;
     esac
+    
+    # Prompt for Dark Mode in interactive mode
+    read -p "Enable Dark Mode? [y/N]: " dark_choice
+    [[ "$dark_choice" == "y" || "$dark_choice" == "Y" ]] && DARK_MODE=true
 fi
 
 # Prompt for Index Type if not specified and doing a full import
@@ -322,6 +365,7 @@ case $MODE in
 esac
 
 apply_branding
+[[ "$DARK_MODE" == true ]] && apply_dark_mode "$public_dir"
 
 
 # Restart UI service to refresh cache
