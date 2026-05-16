@@ -12,8 +12,8 @@ REPO_NAME="genieacs-installer"
 BRANCH="master"
 NBI_URL="http://localhost:7557"
 DB_NAME="genieacs"
-GITHUB_RAW_URL="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}"
-GITHUB_API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents"
+# Base directory (current directory where script is located)
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Colors
 RED='\033[0;31m'
@@ -65,19 +65,23 @@ fi
 
 # --- Helper Functions ---
 
-fetch_repo_files() {
+fetch_local_files() {
     local path=$1
-    curl -s "${GITHUB_API_URL}/${path}?ref=${BRANCH}" | jq -r '.[] | select(.type=="file") | .name'
+    ls -1 "${BASE_DIR}/${path}" 2>/dev/null || echo ""
 }
 
 import_item() {
     local type=$1    # provisions, virtual_parameters, config
     local name=$2
-    local url=$3
+    local local_path=$3
     local content_type=$4
 
     echo -n "Importing ${type}/${name}... "
-    content=$(curl -sL "$url")
+    if [[ ! -f "$local_path" ]]; then
+        echo -e "${RED}Error: File not found: $local_path${NC}"
+        return
+    fi
+    content=$(cat "$local_path")
     
     # Inject ACS_URL into inform provision
     if [[ "$name" == "inform" && "$type" == "provisions" ]]; then
@@ -118,10 +122,10 @@ prune_all() {
 import_provisions() {
     echo -e "\n${BLUE}Importing Provisions...${NC}"
     prune_all "provisions"
-    files=$(fetch_repo_files "provision-script")
+    files=$(fetch_local_files "provision-script")
     for file in $files; do
         if [[ $file == *.js ]]; then
-            import_item "provisions" "${file%.js}" "${GITHUB_RAW_URL}/provision-script/${file}" "application/javascript"
+            import_item "provisions" "${file%.js}" "${BASE_DIR}/provision-script/${file}" "application/javascript"
         fi
     done
 }
@@ -129,10 +133,10 @@ import_provisions() {
 import_vparams() {
     echo -e "\n${BLUE}Importing Virtual Parameters...${NC}"
     prune_all "virtual_parameters"
-    files=$(fetch_repo_files "virtual-params")
+    files=$(fetch_local_files "virtual-params")
     for file in $files; do
         if [[ $file == *.js ]]; then
-            import_item "virtual_parameters" "${file%.js}" "${GITHUB_RAW_URL}/virtual-params/${file}" "application/javascript"
+            import_item "virtual_parameters" "${file%.js}" "${BASE_DIR}/virtual-params/${file}" "application/javascript"
         fi
     done
 }
@@ -174,7 +178,7 @@ import_configs() {
     mongosh --quiet "$DB_NAME" --eval "db.config.deleteMany({_id: /^(ui\.device|ui\.index|ui\.filters|ui\.overview)(\.|$)/})" > /dev/null
     echo -e "${GREEN}Done${NC}"
     
-    files=$(fetch_repo_files "config")
+    files=$(fetch_local_files "config")
     for file in $files; do
         # Determine prefix based on filename
         prefix=""
@@ -197,7 +201,7 @@ import_configs() {
         esac
 
         echo -e "${BLUE}Processing ${file}...${NC}"
-        content=$(curl -sL "${GITHUB_RAW_URL}/config/${file}")
+        content=$(cat "${BASE_DIR}/config/${file}")
         
         # If it's a YAML file, convert to JSON for jq
         if [[ $file == *.yaml || $file == *.yml ]]; then
