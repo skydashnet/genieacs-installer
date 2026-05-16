@@ -210,6 +210,30 @@ import_configs() {
     done
 }
 
+apply_font() {
+    echo -e "\n${BLUE}Applying JetBrains Mono UI Font...${NC}"
+    # Search for the CSS bundle in common installation paths
+    local css_file
+    for path in "/usr/lib/node_modules/genieacs/public" "/usr/local/lib/node_modules/genieacs/public"; do
+        if [[ -d "$path" ]]; then
+            css_file=$(ls "$path"/app-*.css 2>/dev/null | head -n 1)
+            [[ -f "$css_file" ]] && break
+        fi
+    done
+
+    if [[ -f "$css_file" ]]; then
+        if ! grep -q "JetBrains Mono" "$css_file"; then
+            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
+            echo -e "${GREEN}Font applied successfully to $(basename "$css_file")${NC}"
+        else
+            echo -e "${GREEN}Font already applied.${NC}"
+        fi
+    else
+        echo -e "${RED}Warning: Could not find GenieACS UI CSS bundle. Font patch skipped.${NC}"
+        echo -e "${BLUE}Tip: Ensure GenieACS is installed via NPM and the script has permissions to write to node_modules.${NC}"
+    fi
+}
+
 # --- Main ---
 
 MODE="interactive"
@@ -280,6 +304,9 @@ case $MODE in
         import_vparams
         ;;
 esac
+
+apply_font
+
 
 # Restart UI service to refresh cache
 echo -e "\n${BLUE}Restarting GenieACS UI to apply changes...${NC}"
