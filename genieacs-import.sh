@@ -229,13 +229,29 @@ apply_branding() {
     if [[ -f "$css_file" ]]; then
         # 1. Patch Font (JetBrains Mono)
         if ! grep -q "JetBrains Mono" "$css_file"; then
-            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; border-radius: 0 !important; }" >> "$css_file"
-            echo -e "${GREEN}Font and Sharp Corners applied to $(basename "$css_file")${NC}"
+            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
+            echo -e "${GREEN}Font applied to $(basename "$css_file")${NC}"
         else
-            echo -e "${GREEN}UI Customizations (Font/Corners) already applied.${NC}"
+            echo -e "${GREEN}Font already applied.${NC}"
         fi
 
-        # 2. Patch Branding (Appending to end of file)
+        # 2. Patch Sharp Corners
+        if ! grep -q "SHARP CORNERS PATCH" "$css_file"; then
+            echo '
+/* SHARP CORNERS PATCH */
+* { 
+  border-radius: 0 !important; 
+  border-top-left-radius: 0 !important; 
+  border-top-right-radius: 0 !important; 
+  border-bottom-left-radius: 0 !important; 
+  border-bottom-right-radius: 0 !important; 
+}' >> "$css_file"
+            echo -e "${GREEN}Sharp corners applied.${NC}"
+        else
+            echo -e "${GREEN}Sharp corners already applied.${NC}"
+        fi
+
+        # 3. Patch Branding (Appending to end of file)
         if ! grep -q "Customized by EtherGig" "$css_file"; then
             echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; }' >> "$css_file"
             echo -e "${GREEN}Branding applied to $(basename "$css_file")${NC}"
