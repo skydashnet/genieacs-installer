@@ -231,17 +231,64 @@ manufacturer:
 product-class:
   label: "'Product Class'"
   slices:
+    F450:
+      color: "'#e0a102'"
+      filter: VirtualParameters.KnownProductClass = "ZXHN F450(EPON ONU)"
+      label: "'F450'"
+    F460:
+      color: "'#a1e002'"
+      filter: VirtualParameters.KnownProductClass = "F460"
+      label: "'F460'"
+    F609:
+      color: "'#02a1e0'"
+      filter: VirtualParameters.KnownProductClass = "F609"
+      label: "'F609'"
+    F650:
+      color: "'#e002a1'"
+      filter: VirtualParameters.KnownProductClass = "F650"
+      label: "'F650'"
+    F663NV3A:
+      color: "'#a102e0'"
+      filter: VirtualParameters.KnownProductClass = "F663NV3a" OR VirtualParameters.KnownProductClass
+        = "F663NV3A"
+      label: "'F663NV3A'"
     F663NV9:
       color: "'#e0a101'"
       filter: VirtualParameters.KnownProductClass = "F663NV9"
       label: "'F663NV9'"
-    G663-XPON:
+    F670:
+      color: "'#01e0a1'"
+      filter: VirtualParameters.KnownProductClass = "F670"
+      label: "'F670'"
+    F670L:
+      color: "'#a101e0'"
+      filter: VirtualParameters.KnownProductClass = "F670L"
+      label: "'F670L'"
+    G663:
       color: "'#0b4a00'"
-      filter: VirtualParameters.KnownProductClass = "G663-XPON"
-      label: "'G663-XPON'"
+      filter: VirtualParameters.KnownProductClass = "G663 XPON" OR VirtualParameters.KnownProductClass
+        = "G663-XPON"
+      label: "'G663'"
+    G665:
+      color: "'#4a0b00'"
+      filter: VirtualParameters.KnownProductClass = "G665 XPON"
+      label: "'G665'"
+    G680L:
+      color: "'#000b4a'"
+      filter: VirtualParameters.KnownProductClass = "G680L XPON"
+      label: "'G680L'"
+    G99:
+      color: "'#4a000b'"
+      filter: VirtualParameters.KnownProductClass = "G99 XPON"
+      label: "'G99'"
+    GM219:
+      color: "'#4a4a00'"
+      filter: VirtualParameters.KnownProductClass = "GM219"
+      label: "'GM219'"
     GM220-S:
       color: "'#42f566'"
-      filter: VirtualParameters.KnownProductClass = "GM220-S"
+      filter: VirtualParameters.KnownProductClass = "GM220-S" OR VirtualParameters.KnownProductClass
+        = "GM220-S XPON"
       label: "'GM220-S'"
     GM630:
       color: "'#42f5bc'"
@@ -251,10 +298,34 @@ product-class:
       color: "'#0266e0'"
       filter: VirtualParameters.KnownProductClass = "H1s-3"
       label: "'H1s-3'"
+    HG6145D2:
+      color: "'#e04242'"
+      filter: VirtualParameters.KnownProductClass = "HG6145D2"
+      label: "'HG6145D2'"
+    HG6245N:
+      color: "'#42e042'"
+      filter: VirtualParameters.KnownProductClass = "HG6245N"
+      label: "'HG6245N'"
+    HG8145V5:
+      color: "'#4242e0'"
+      filter: VirtualParameters.KnownProductClass = "HG8145V5"
+      label: "'HG8145V5'"
     HG8245A:
       color: "'#428700'"
       filter: VirtualParameters.KnownProductClass = "HG8245A"
       label: "'HG8245A'"
+    HG8245H:
+      color: "'#874200'"
+      filter: VirtualParameters.KnownProductClass = "HG8245H"
+      label: "'HG8245H'"
+    HG8245H5:
+      color: "'#008742'"
+      filter: VirtualParameters.KnownProductClass = "HG8245H5"
+      label: "'HG8245H5'"
+    HG8546M:
+      color: "'#420087'"
+      filter: VirtualParameters.KnownProductClass = "HG8546M"
+      label: "'HG8546M'"
     HS8145C5:
       color: "'#4287f5'"
       filter: VirtualParameters.KnownProductClass = "HS8145C5"
@@ -263,23 +334,11 @@ product-class:
       color: "'#004a37'"
       filter: VirtualParameters.KnownProductClass = "MQ220"
       label: "'MQ220'"
+    XSF609:
+      color: "'#37004a'"
+      filter: VirtualParameters.KnownProductClass = "XSF609"
+      label: "'XSF609'"
     Other:
       color: "'#ffffff'"
       filter: VirtualParameters.KnownProductClass = "Other"
       label: "'Other'"
-    TOTOLINK_N200RE:
-      color: "'#00214a'"
-      filter: VirtualParameters.KnownProductClass = "TOTOLINK_N200RE"
-      label: "'TOTOLINK_N200RE'"
-    TOTOLINK_N300RT:
-      color: "'#00215a'"
-      filter: VirtualParameters.KnownProductClass = "TOTOLINK_N300RT"
-      label: "'TOTOLINK_N300RT'"
-    TOTOLINK_N355RT:
-      color: "'#00214f'"
-      filter: VirtualParameters.KnownProductClass = "TOTOLINK_N355RT"
-      label: "'TOTOLINK_N355RT'"
-    ZXHN-F450:
-      color: "'#e0a102'"
-      filter: VirtualParameters.KnownProductClass = "ZXHN F450(EPON ONU)"
-      label: "'ZXHN F450(EPON ONU)'"
