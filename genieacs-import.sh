@@ -215,95 +215,72 @@ import_configs() {
     done
 }
 
-apply_branding() {
+apply_ui_customizations() {
     local public_dir=$1
-    echo -e "\n${BLUE}Applying UI Customizations (Font & Branding)...${NC}"
+    echo -e "\n${BLUE}Applying UI Customizations...${NC}"
     
     if [[ -z "$public_dir" ]]; then
         echo -e "${RED}Warning: Could not find GenieACS UI public directory. Customizations skipped.${NC}"
         return
     fi
 
-    # Patch CSS (Font & Branding)
     local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
-    if [[ -f "$css_file" ]]; then
-        # 1. Patch Font (JetBrains Mono)
-        if ! grep -q "JetBrains Mono" "$css_file"; then
-            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
-            echo -e "${GREEN}Font applied to $(basename "$css_file")${NC}"
-        else
-            echo -e "${GREEN}Font already applied.${NC}"
-        fi
-
-        # 2. Patch Sharp Corners (Force update)
-        sed -i "/\/\* SHARP CORNERS PATCH \*\//,+8d" "$css_file"
-        echo '
-/* SHARP CORNERS PATCH */
-* { 
-  border-radius: 0 !important; 
-  border-top-left-radius: 0 !important; 
-  border-top-right-radius: 0 !important; 
-  border-bottom-left-radius: 0 !important; 
-  border-bottom-right-radius: 0 !important; 
-}' >> "$css_file"
-        echo -e "${GREEN}Sharp corners applied.${NC}"
-
-        # 3. Patch Branding (Appending to end of file)
-        if ! grep -q "Customized by EtherGig" "$css_file"; then
-            echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; }' >> "$css_file"
-            echo -e "${GREEN}Branding applied to $(basename "$css_file")${NC}"
-        else
-            echo -e "${GREEN}Branding already applied.${NC}"
-        fi
-    else
+    if [[ ! -f "$css_file" ]]; then
         echo -e "${RED}Error: Could not find GenieACS UI CSS bundle.${NC}"
+        return
     fi
-}
 
-apply_dark_mode() {
-    local public_dir=$1
-    echo -e "\n${BLUE}Applying Dark Mode theme...${NC}"
-    local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
-    if [[ -f "$css_file" ]]; then
-        # Remove old patch if exists to allow updating
-        sed -i "/\/\* DARK MODE PATCH \*\//,\$d" "$css_file"
+    # 1. Clean existing patches (Remove everything from our first marker to the end)
+    sed -i "/\/\* GENIEACS-PATCH-START \*\//,\$d" "$css_file"
+
+    # 2. Build the new patch block
+    {
+        echo -e "\n/* GENIEACS-PATCH-START */"
         
-        echo '
-/* DARK MODE PATCH */
-:root {
-  --color1: #333 !important;
-  --color2: #444 !important;
-  --color3: #1a1a1a !important;
-  --color4: #00bfaf !important;
-  --color5: #eee !important;
-  --disabled: #888 !important;
-}
-body, #content-wrapper { background-color: #111 !important; color: #eee !important; }
-#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }
-#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }
-table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }
-table.table.highlight > tbody > tr:hover { background-color: #222 !important; }
-input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }
-.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }
-.CodeMirror-linenumber { color: #666 !important; }
-.pie-chart > svg > path { stroke: #111 !important; }
-.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }
-.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }
-.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }
-span.tag { background-color: #333 !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #444 !important; padding: 2px 8px !important; }
-.overview-dot > svg > circle { stroke: #111 !important; }
-button.primary { background-color: #00bfaf !important; color: #111 !important; }
-button.primary:hover { background-color: #008f83 !important; }
-.CodeMirror { border-color: #333 !important; }
-.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }
-.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }
-.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }
-.drawer .parameter, .drawer .value { color: #00bfaf !important; }
-.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }
-.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }
-' >> "$css_file"
-        echo -e "${GREEN}Dark mode applied successfully.${NC}"
-    fi
+        # Font Patch
+        echo "/* FONT PATCH */"
+        echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');"
+        echo "* { font-family: 'JetBrains Mono', monospace !important; }"
+
+        # Sharp Corners Patch
+        echo "/* SHARP CORNERS PATCH */"
+        echo "* { border-radius: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }"
+
+        # Branding Patch
+        echo "/* BRANDING PATCH */"
+        echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; }'
+
+        # Dark Mode Patch (If enabled)
+        if [[ "$DARK_MODE" == true ]]; then
+            echo "/* DARK MODE PATCH */"
+            echo ':root { --color1: #333 !important; --color2: #444 !important; --color3: #1a1a1a !important; --color4: #00bfaf !important; --color5: #eee !important; --disabled: #888 !important; }'
+            echo 'body, #content-wrapper { background-color: #111 !important; color: #eee !important; }'
+            echo '#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }'
+            echo '#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }'
+            echo 'table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }'
+            echo 'table.table.highlight > tbody > tr:hover { background-color: #222 !important; }'
+            echo 'input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
+            echo '.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }'
+            echo '.CodeMirror-linenumber { color: #666 !important; }'
+            echo '.pie-chart > svg > path { stroke: #111 !important; }'
+            echo '.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }'
+            echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }'
+            echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
+            echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
+            echo '.overview-dot > svg > circle { stroke: #111 !important; }'
+            echo 'button.primary { background-color: #00bfaf !important; color: #111 !important; }'
+            echo 'button.primary:hover { background-color: #008f83 !important; }'
+            echo '.CodeMirror { border-color: #333 !important; }'
+            echo '.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
+            echo '.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
+            echo '.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }'
+            echo '.drawer .parameter, .drawer .value { color: #00bfaf !important; }'
+            echo '.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }'
+            echo '.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }'
+        fi
+    } >> "$css_file"
+
+    echo -e "${GREEN}All UI customizations applied successfully.${NC}"
 }
 
 # --- Main ---
@@ -391,8 +368,7 @@ for path in "/usr/lib/node_modules/genieacs/public" "/usr/local/lib/node_modules
     [[ -d "$path" ]] && PUBLIC_DIR="$path" && break
 done
 
-apply_branding "$PUBLIC_DIR"
-[[ "$DARK_MODE" == true ]] && apply_dark_mode "$PUBLIC_DIR"
+apply_ui_customizations "$PUBLIC_DIR"
 
 
 # Restart UI service to refresh cache
