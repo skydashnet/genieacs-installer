@@ -216,13 +216,9 @@ import_configs() {
 }
 
 apply_branding() {
+    local public_dir=$1
     echo -e "\n${BLUE}Applying UI Customizations (Font & Branding)...${NC}"
     
-    local public_dir
-    for path in "/usr/lib/node_modules/genieacs/public" "/usr/local/lib/node_modules/genieacs/public"; do
-        [[ -d "$path" ]] && public_dir="$path" && break
-    done
-
     if [[ -z "$public_dir" ]]; then
         echo -e "${RED}Warning: Could not find GenieACS UI public directory. Customizations skipped.${NC}"
         return
@@ -364,8 +360,16 @@ case $MODE in
         ;;
 esac
 
-apply_branding
-[[ "$DARK_MODE" == true ]] && apply_dark_mode "$public_dir"
+# --- UI Customizations ---
+
+# Find Public Directory
+PUBLIC_DIR=""
+for path in "/usr/lib/node_modules/genieacs/public" "/usr/local/lib/node_modules/genieacs/public"; do
+    [[ -d "$path" ]] && PUBLIC_DIR="$path" && break
+done
+
+apply_branding "$PUBLIC_DIR"
+[[ "$DARK_MODE" == true ]] && apply_dark_mode "$PUBLIC_DIR"
 
 
 # Restart UI service to refresh cache
