@@ -229,10 +229,10 @@ apply_branding() {
     if [[ -f "$css_file" ]]; then
         # 1. Patch Font (JetBrains Mono)
         if ! grep -q "JetBrains Mono" "$css_file"; then
-            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
-            echo -e "${GREEN}Font applied to $(basename "$css_file")${NC}"
+            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; border-radius: 0 !important; }" >> "$css_file"
+            echo -e "${GREEN}Font and Sharp Corners applied to $(basename "$css_file")${NC}"
         else
-            echo -e "${GREEN}Font already applied.${NC}"
+            echo -e "${GREEN}UI Customizations (Font/Corners) already applied.${NC}"
         fi
 
         # 2. Patch Branding (Appending to end of file)
