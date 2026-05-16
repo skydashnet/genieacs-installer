@@ -227,27 +227,26 @@ apply_branding() {
         return
     fi
 
-    # 1. Patch CSS (JetBrains Mono Font)
+    # Patch CSS (Font & Branding)
     local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
     if [[ -f "$css_file" ]]; then
+        # 1. Patch Font (JetBrains Mono)
         if ! grep -q "JetBrains Mono" "$css_file"; then
             echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
             echo -e "${GREEN}Font applied to $(basename "$css_file")${NC}"
         else
             echo -e "${GREEN}Font already applied.${NC}"
         fi
-    fi
 
-    # 2. Patch JS (Branding)
-    local js_file=$(ls "$public_dir"/app-*.js 2>/dev/null | head -n 1)
-    if [[ -f "$js_file" ]]; then
-        if ! grep -q "Customized by EtherGig" "$js_file"; then
-            # More robust branding script
-            echo '(function(){const i=()=>{const e=document.querySelector(".version");if(e&&!e.innerHTML.includes("Customized")){e.innerHTML+=" | Customized by EtherGig"}};new MutationObserver(i).observe(document.documentElement,{childList:true,subtree:true});i()})();' >> "$js_file"
-            echo -e "${GREEN}Branding applied to $(basename "$js_file")${NC}"
+        # 2. Patch Branding (Customized by EtherGig)
+        if ! grep -q "Customized by EtherGig" "$css_file"; then
+            echo '.version::after { content: " | Customized by EtherGig" !important; }' >> "$css_file"
+            echo -e "${GREEN}Branding applied to $(basename "$css_file")${NC}"
         else
             echo -e "${GREEN}Branding already applied.${NC}"
         fi
+    else
+        echo -e "${RED}Error: Could not find GenieACS UI CSS bundle.${NC}"
     fi
 }
 
