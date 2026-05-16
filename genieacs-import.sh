@@ -38,7 +38,7 @@ usage() {
     echo "  --full           Full Import (Provisions + VParams + Config)"
     echo "  --vparams        Import only Virtual Parameters"
     echo "  --acs-url <url>  Set ACS URL (domain or IP) for inform.js"
-    echo "  --dark           Apply Dark Mode theme"
+    echo "  --theme <name>   Select theme (vanilla, light, dark)"
     echo "  --help           Show this help"
     echo ""
     echo "If no options are provided, the script runs in interactive mode."
@@ -217,7 +217,7 @@ import_configs() {
 
 apply_ui_customizations() {
     local public_dir=$1
-    echo -e "\n${BLUE}Applying UI Customizations...${NC}"
+    echo -e "\n${BLUE}Applying UI Customizations (Theme: $THEME)...${NC}"
     
     if [[ -z "$public_dir" ]]; then
         echo -e "${RED}Warning: Could not find GenieACS UI public directory. Customizations skipped.${NC}"
@@ -237,52 +237,65 @@ apply_ui_customizations() {
     {
         echo -e "\n/* GENIEACS-PATCH-START */"
         
-        # Font Patch
-        echo "/* FONT PATCH */"
-        echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');"
-        echo "* { font-family: 'JetBrains Mono', monospace !important; }"
-
-        # Sharp Corners Patch
-        echo "/* SHARP CORNERS PATCH */"
-        echo "* { border-radius: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }"
-
-        # Branding Patch
+        # --- Common Branding (All Themes) ---
         echo "/* BRANDING PATCH */"
-        echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; }'
+        echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; color: #00bfaf !important; font-weight: bold !important; }'
 
-        # Dark Mode Patch (If enabled)
-        if [[ "$DARK_MODE" == true ]]; then
-            echo "/* DARK MODE PATCH */"
-            echo ':root { --color1: #333 !important; --color2: #444 !important; --color3: #1a1a1a !important; --color4: #eee !important; --color5: #eee !important; --disabled: #888 !important; }'
-            echo 'body, #content-wrapper { background-color: #111 !important; color: #eee !important; }'
-            echo '#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }'
-            echo '#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }'
-            echo 'table.table th { color: #fff !important; border-bottom: 2px solid #444 !important; }'
-            echo 'table.table.highlight > tbody > tr:hover { background-color: #222 !important; }'
-            echo 'input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
-            echo '.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }'
-            echo '.CodeMirror-linenumber { color: #666 !important; }'
-            echo '.pie-chart > svg > path { stroke: #111 !important; }'
-            echo '.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }'
-            echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }'
-            echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
-            echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #eee !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
-            echo '.overview-dot > svg > circle { stroke: #111 !important; }'
-            echo 'button.primary { background-color: #00bfaf !important; color: #111 !important; }'
-            echo 'button.primary:hover { background-color: #008f83 !important; }'
-            echo '.CodeMirror { border-color: #333 !important; }'
-            echo '.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
-            echo '.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
-            echo '.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }'
-            echo '.drawer .parameter, .drawer .value { color: #ccc !important; }'
-            echo '.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }'
-            echo '.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }'
-            # branding color preserved
-            echo '.version::after { color: #00bfaf !important; font-weight: bold !important; }'
+        if [[ "$THEME" == "vanilla" ]]; then
+            echo "/* VANILLA MODE: Only Branding Applied */"
+        else
+            # --- Font & Corners (Light and Dark only) ---
+            echo "/* FONT PATCH */"
+            echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');"
+            echo "* { font-family: 'JetBrains Mono', monospace !important; }"
+
+            echo "/* SHARP CORNERS PATCH */"
+            echo "* { border-radius: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }"
+
+            if [[ "$THEME" == "dark" ]]; then
+                # --- Dark Mode Patch ---
+                echo "/* DARK MODE PATCH */"
+                echo ':root { --color1: #333 !important; --color2: #444 !important; --color3: #1a1a1a !important; --color4: #eee !important; --color5: #eee !important; --disabled: #888 !important; }'
+                echo 'body, #content-wrapper { background-color: #111 !important; color: #eee !important; }'
+                echo '#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }'
+                echo '#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }'
+                echo 'table.table th { color: #fff !important; border-bottom: 2px solid #444 !important; }'
+                echo 'table.table.highlight > tbody > tr:hover { background-color: #222 !important; }'
+                echo 'input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
+                echo '.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }'
+                echo '.CodeMirror-linenumber { color: #666 !important; }'
+                echo '.pie-chart > svg > path { stroke: #111 !important; }'
+                echo '.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }'
+                echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }'
+                echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
+                echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #eee !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
+                echo '.overview-dot > svg > circle { stroke: #111 !important; }'
+                echo 'button.primary { background-color: #00bfaf !important; color: #111 !important; }'
+                echo 'button.primary:hover { background-color: #008f83 !important; }'
+                echo '.CodeMirror { border-color: #333 !important; }'
+                echo '.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
+                echo '.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
+                echo '.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }'
+                echo '.drawer .parameter, .drawer .value { color: #ccc !important; }'
+                echo '.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }'
+                echo '.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }'
+            else
+                # --- Light (Premium) Mode Patch ---
+                echo "/* LIGHT PREMIUM PATCH */"
+                echo ':root { --color1: #ddd !important; --color2: #ccc !important; --color3: #fdfdfd !important; --color4: #00bfaf !important; --color5: #333 !important; }'
+                echo '#header { background-color: #fff !important; border-bottom: 1px solid #ddd !important; }'
+                echo '#side-menu > ul > li > a { background-color: #f9f9f9 !important; color: #333 !important; border: 1px solid #eee !important; }'
+                echo '#side-menu > ul > li > a:hover { background-color: #00bfaf !important; color: #fff !important; }'
+                echo 'table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }'
+                echo 'table.table.highlight > tbody > tr:hover { background-color: #f0fdfc !important; }'
+                echo 'input, select, textarea, .CodeMirror { background-color: #fff !important; border-color: #ddd !important; }'
+                echo 'button.primary { background-color: #00bfaf !important; color: #fff !important; }'
+                echo 'span.tag { background-color: #f0fdfc !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #00bfaf !important; padding: 2px 8px !important; }'
+            fi
         fi
     } >> "$css_file"
 
-    echo -e "${GREEN}All UI customizations applied successfully.${NC}"
+    echo -e "${GREEN}Theme '$THEME' applied successfully.${NC}"
 }
 
 # --- Main ---
@@ -290,7 +303,7 @@ apply_ui_customizations() {
 MODE="interactive"
 INDEX_TYPE="both" # Default to both if not specified
 ACS_URL=""
-DARK_MODE=false
+THEME="light" # Default theme
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -298,7 +311,7 @@ while [[ "$#" -gt 0 ]]; do
         --vparams) MODE="vparams" ;;
         --index-type) INDEX_TYPE="$2"; shift ;;
         --acs-url) ACS_URL="$2"; shift ;;
-        --dark) DARK_MODE=true ;;
+        --theme) THEME="$2"; shift ;;
         --help) usage; exit 0 ;;
         *) echo "Unknown parameter: $1"; usage; exit 1 ;;
     esac
@@ -318,9 +331,18 @@ if [[ "$MODE" == "interactive" ]]; then
         *) exit 0 ;;
     esac
     
-    # Prompt for Dark Mode in interactive mode
-    read -p "Enable Dark Mode? [y/N]: " dark_choice
-    [[ "$dark_choice" == "y" || "$dark_choice" == "Y" ]] && DARK_MODE=true
+    # Theme selection in interactive mode
+    echo -e "\n${BLUE}Select UI Theme:${NC}"
+    echo "1) Vanilla (Branding only)"
+    echo "2) Light Premium (Modern white-label)"
+    echo "3) Dark Midnight (Current dark theme)"
+    read -p "Select an option [1-3]: " theme_choice
+    case $theme_choice in
+        1) THEME="vanilla" ;;
+        2) THEME="light" ;;
+        3) THEME="dark" ;;
+        *) THEME="light" ;;
+    esac
 fi
 
 # Prompt for Index Type if not specified and doing a full import
