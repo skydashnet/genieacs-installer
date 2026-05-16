@@ -214,27 +214,39 @@ import_configs() {
     done
 }
 
-apply_font() {
-    echo -e "\n${BLUE}Applying JetBrains Mono UI Font...${NC}"
-    # Search for the CSS bundle in common installation paths
-    local css_file
+apply_branding() {
+    echo -e "\n${BLUE}Applying UI Customizations (Font & Branding)...${NC}"
+    
+    local public_dir
     for path in "/usr/lib/node_modules/genieacs/public" "/usr/local/lib/node_modules/genieacs/public"; do
-        if [[ -d "$path" ]]; then
-            css_file=$(ls "$path"/app-*.css 2>/dev/null | head -n 1)
-            [[ -f "$css_file" ]] && break
-        fi
+        [[ -d "$path" ]] && public_dir="$path" && break
     done
 
+    if [[ -z "$public_dir" ]]; then
+        echo -e "${RED}Warning: Could not find GenieACS UI public directory. Customizations skipped.${NC}"
+        return
+    fi
+
+    # 1. Patch CSS (JetBrains Mono Font)
+    local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
     if [[ -f "$css_file" ]]; then
         if ! grep -q "JetBrains Mono" "$css_file"; then
             echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap'); * { font-family: 'JetBrains Mono', monospace !important; }" >> "$css_file"
-            echo -e "${GREEN}Font applied successfully to $(basename "$css_file")${NC}"
+            echo -e "${GREEN}Font applied to $(basename "$css_file")${NC}"
         else
             echo -e "${GREEN}Font already applied.${NC}"
         fi
-    else
-        echo -e "${RED}Warning: Could not find GenieACS UI CSS bundle. Font patch skipped.${NC}"
-        echo -e "${BLUE}Tip: Ensure GenieACS is installed via NPM and the script has permissions to write to node_modules.${NC}"
+    fi
+
+    # 2. Patch JS (Branding)
+    local js_file=$(ls "$public_dir"/app-*.js 2>/dev/null | head -n 1)
+    if [[ -f "$js_file" ]]; then
+        if ! grep -q "Customized by EtherGig" "$js_file"; then
+            echo '(function(){const o=new MutationObserver((m)=>{if(document.body.innerText.includes("v1.2.")){const e=document.querySelector(".version")||document.querySelector("small");if(e&&!e.dataset.branded){e.innerHTML+=" | Customized by EtherGig";e.dataset.branded="true"}}});o.observe(document.body,{childList:true,subtree:true})})();' >> "$js_file"
+            echo -e "${GREEN}Branding applied to $(basename "$js_file")${NC}"
+        else
+            echo -e "${GREEN}Branding already applied.${NC}"
+        fi
     fi
 }
 
@@ -309,7 +321,7 @@ case $MODE in
         ;;
 esac
 
-apply_font
+apply_branding
 
 
 # Restart UI service to refresh cache
