@@ -238,9 +238,9 @@ apply_branding() {
             echo -e "${GREEN}Font already applied.${NC}"
         fi
 
-        # 2. Patch Branding (Customized by EtherGig)
+        # 2. Patch Branding (More aggressive selector)
         if ! grep -q "Customized by EtherGig" "$css_file"; then
-            echo '.version::after { content: " | Customized by EtherGig" !important; }' >> "$css_file"
+            echo 'span[class*="version"]::after, .version::after { content: " | Customized by EtherGig" !important; display: inline !important; }' >> "$css_file"
             echo -e "${GREEN}Branding applied to $(basename "$css_file")${NC}"
         else
             echo -e "${GREEN}Branding already applied.${NC}"
