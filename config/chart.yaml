@@ -366,7 +366,7 @@ product-class:
       color: "'#37004a'"
       filter: VirtualParameters.KnownProductClass = "XSF609"
       label: "'XSF609'"
-    Other:
+    zz_Other:
       color: "'#ffffff'"
       filter: VirtualParameters.KnownProductClass = "Other"
       label: "'Other'"
