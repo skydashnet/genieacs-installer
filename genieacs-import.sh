@@ -252,8 +252,10 @@ apply_dark_mode() {
     echo -e "\n${BLUE}Applying Dark Mode theme...${NC}"
     local css_file=$(ls "$public_dir"/app-*.css 2>/dev/null | head -n 1)
     if [[ -f "$css_file" ]]; then
-        if ! grep -q "DARK MODE PATCH" "$css_file"; then
-            echo '
+        # Remove old patch if exists to allow updating
+        sed -i "/\/\* DARK MODE PATCH \*\//,\$d" "$css_file"
+        
+        echo '
 /* DARK MODE PATCH */
 :root {
   --color1: #333 !important;
@@ -275,11 +277,13 @@ input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; col
 .all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }
 .autocomplete { background-color: #1a1a1a !important; color: #eee !important; }
 .overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }
+span.tag { background-color: #333 !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #444 !important; padding: 2px 8px !important; }
+.overview-dot > svg > circle { stroke: #111 !important; }
+button.primary { background-color: #00bfaf !important; color: #111 !important; }
+button.primary:hover { background-color: #008f83 !important; }
+.CodeMirror { border-color: #333 !important; }
 ' >> "$css_file"
-            echo -e "${GREEN}Dark mode applied successfully.${NC}"
-        else
-            echo -e "${GREEN}Dark mode already applied.${NC}"
-        fi
+        echo -e "${GREEN}Dark mode applied successfully.${NC}"
     fi
 }
 
