@@ -27,7 +27,7 @@ optical-rx-power-short:
       filter: VirtualParameters.OpticalRXPower > -10 AND
         VirtualParameters.OpticalRXPower <> "N/A"
     2_rxExcellent:
-      color: "'#0266e0'"
+      color: "'#00bfaf'"
       filter: VirtualParameters.OpticalRXPower <= -10 AND
         VirtualParameters.OpticalRXPower > -20
     3_rxGood:
@@ -82,7 +82,7 @@ optical-rx-power:
         VirtualParameters.OpticalRXPower <> "N/A"
       label: "'Too Strong'"
     2_rxExcellent:
-      color: "'#0266e0'"
+      color: "'#00bfaf'"
       filter: VirtualParameters.OpticalRXPower <= -10 AND
         VirtualParameters.OpticalRXPower > -20
       label: "'Excellent'"
