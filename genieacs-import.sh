@@ -253,11 +253,11 @@ apply_ui_customizations() {
         # Dark Mode Patch (If enabled)
         if [[ "$DARK_MODE" == true ]]; then
             echo "/* DARK MODE PATCH */"
-            echo ':root { --color1: #333 !important; --color2: #444 !important; --color3: #1a1a1a !important; --color4: #00bfaf !important; --color5: #eee !important; --disabled: #888 !important; }'
+            echo ':root { --color1: #333 !important; --color2: #444 !important; --color3: #1a1a1a !important; --color4: #eee !important; --color5: #eee !important; --disabled: #888 !important; }'
             echo 'body, #content-wrapper { background-color: #111 !important; color: #eee !important; }'
             echo '#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }'
             echo '#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #eee !important; }'
-            echo 'table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }'
+            echo 'table.table th { color: #fff !important; border-bottom: 2px solid #444 !important; }'
             echo 'table.table.highlight > tbody > tr:hover { background-color: #222 !important; }'
             echo 'input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
             echo '.CodeMirror-gutters { background-color: #1a1a1a !important; border-right: 1px solid #333 !important; }'
@@ -266,7 +266,7 @@ apply_ui_customizations() {
             echo '.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }'
             echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }'
             echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
-            echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
+            echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #eee !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
             echo '.overview-dot > svg > circle { stroke: #111 !important; }'
             echo 'button.primary { background-color: #00bfaf !important; color: #111 !important; }'
             echo 'button.primary:hover { background-color: #008f83 !important; }'
@@ -274,9 +274,11 @@ apply_ui_customizations() {
             echo '.drawer { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
             echo '.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; }'
             echo '.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }'
-            echo '.drawer .parameter, .drawer .value { color: #00bfaf !important; }'
+            echo '.drawer .parameter, .drawer .value { color: #ccc !important; }'
             echo '.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }'
             echo '.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }'
+            # branding color preserved
+            echo '.version::after { color: #00bfaf !important; font-weight: bold !important; }'
         fi
     } >> "$css_file"
 
