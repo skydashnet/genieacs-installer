@@ -12,7 +12,7 @@ access-type:
         = "Ethernet"
       label: "'Ethernet'"
     gpon:
-      color: "'#0266e0'"
+      color: "'#00bfaf'"
       filter: InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType
         = "GPON"
       label: "'GPON'"
