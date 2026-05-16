@@ -235,9 +235,9 @@ apply_branding() {
             echo -e "${GREEN}Font already applied.${NC}"
         fi
 
-        # 2. Patch Sharp Corners
-        if ! grep -q "SHARP CORNERS PATCH" "$css_file"; then
-            echo '
+        # 2. Patch Sharp Corners (Force update)
+        sed -i "/\/\* SHARP CORNERS PATCH \*\//,+8d" "$css_file"
+        echo '
 /* SHARP CORNERS PATCH */
 * { 
   border-radius: 0 !important; 
@@ -246,10 +246,7 @@ apply_branding() {
   border-bottom-left-radius: 0 !important; 
   border-bottom-right-radius: 0 !important; 
 }' >> "$css_file"
-            echo -e "${GREEN}Sharp corners applied.${NC}"
-        else
-            echo -e "${GREEN}Sharp corners already applied.${NC}"
-        fi
+        echo -e "${GREEN}Sharp corners applied.${NC}"
 
         # 3. Patch Branding (Appending to end of file)
         if ! grep -q "Customized by EtherGig" "$css_file"; then
