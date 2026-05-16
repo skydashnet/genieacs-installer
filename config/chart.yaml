@@ -12,7 +12,7 @@ access-type:
         = "Ethernet"
       label: "'Ethernet'"
     gpon:
-      color: "'#e0a102'"
+      color: "'#0266e0'"
       filter: InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType
         = "GPON"
       label: "'GPON'"
@@ -22,15 +22,19 @@ optical-rx-power-short:
     0_rxNa:
       color: "'#ffffff'"
       filter: VirtualParameters.OpticalRXPower = "N/A"
-    1_rxGood:
-      color: "'#1fde5a'"
-      filter: VirtualParameters.OpticalRXPower > -20 AND
-        VirtualParameters.OpticalRXPower <> "N/A"
-    2_rxOk:
+    1_rxTooStrong:
       color: "'#f28f00'"
+      filter: VirtualParameters.OpticalRXPower > -10 AND
+        VirtualParameters.OpticalRXPower <> "N/A"
+    2_rxExcellent:
+      color: "'#0266e0'"
+      filter: VirtualParameters.OpticalRXPower <= -10 AND
+        VirtualParameters.OpticalRXPower > -20
+    3_rxGood:
+      color: "'#1fde5a'"
       filter: VirtualParameters.OpticalRXPower <= -20 AND
         VirtualParameters.OpticalRXPower >= -25
-    3_rxBad:
+    4_rxBad:
       color: "'#ff5252'"
       filter: VirtualParameters.OpticalRXPower < -25 AND
         VirtualParameters.OpticalRXPower <> "N/A"
@@ -55,24 +59,16 @@ optical-temperature-short:
 online-short:
   label: "'Online status'"
   slices:
-    0_onlineNow:
+    0_online:
       color: "'#1fde5a'"
-      filter: Events.Inform > NOW() - 30 * 60 * 1000
-    1_past1h:
-      color: "'#d1de1f'"
-      filter: Events.Inform <= NOW() - 30 * 60 * 1000 AND Events.Inform > NOW() - 60 *
-        60 * 1000
-    2_past24h:
+      filter: Events.Inform > NOW() - 15 * 60 * 1000
+    1_offline_lt_1d:
       color: "'#f28f00'"
-      filter: Events.Inform <= NOW() - 60 * 60 * 1000 AND Events.Inform > NOW() - 24 *
+      filter: Events.Inform <= NOW() - 15 * 60 * 1000 AND Events.Inform > NOW() - 24 *
         60 * 60 * 1000
-    3_past30d:
+    2_offline_gt_1d:
       color: "'#ff5252'"
-      filter: Events.Inform <= NOW() - 24 * 60 * 60 * 1000 AND Events.Inform > NOW() -
-        30 * 24 * 60 * 60 * 1000
-    4_older:
-      color: "'#7b1fa2'"
-      filter: Events.Inform <= NOW() - 30 * 24 * 60 * 60 * 1000
+      filter: Events.Inform <= NOW() - 24 * 60 * 60 * 1000
 optical-rx-power:
   label: "'RX Power'"
   slices:
@@ -80,20 +76,25 @@ optical-rx-power:
       color: "'#ffffff'"
       filter: VirtualParameters.OpticalRXPower = "N/A"
       label: "'N/A'"
-    1_rxGood:
-      color: "'#1fde5a'"
-      filter: VirtualParameters.OpticalRXPower > -20 AND
-        VirtualParameters.OpticalRXPower <> "N/A"
-      label: "'Good'"
-    2_rxOk:
+    1_rxTooStrong:
       color: "'#f28f00'"
+      filter: VirtualParameters.OpticalRXPower > -10 AND
+        VirtualParameters.OpticalRXPower <> "N/A"
+      label: "'Too Strong'"
+    2_rxExcellent:
+      color: "'#0266e0'"
+      filter: VirtualParameters.OpticalRXPower <= -10 AND
+        VirtualParameters.OpticalRXPower > -20
+      label: "'Excellent'"
+    3_rxGood:
+      color: "'#1fde5a'"
       filter: VirtualParameters.OpticalRXPower <= -20 AND
         VirtualParameters.OpticalRXPower >= -25
-      label: "'Ok'"
-    3_rxBad:
+      label: "'Good'"
+    4_rxBad:
       color: "'#ff5252'"
       filter: VirtualParameters.OpticalRXPower < -25 AND
-        VirtualParameters.OpticalTemperature <> "N/A"
+        VirtualParameters.OpticalRXPower <> "N/A"
       label: "'Bad'"
 optical-temperature:
   label: "'Optical Temperature'"
@@ -167,53 +168,33 @@ device-uptime:
 online:
   label: "'Last Inform'"
   slices:
-    0_onlineNow:
+    0_online:
       color: "'#1fde5a'"
-      filter: Events.Inform > NOW() - 30 * 60 * 1000
+      filter: Events.Inform > NOW() - 15 * 60 * 1000
       label: "'Online'"
-    1_past1h:
-      color: "'#d1de1f'"
-      filter: Events.Inform <= NOW() - 30 * 60 * 1000 AND Events.Inform > NOW() - 60 *
-        60 * 1000
-      label: "'Offline >30m'"
-    2_past24h:
+    1_offline_lt_1d:
       color: "'#f28f00'"
-      filter: Events.Inform <= NOW() - 60 * 60 * 1000 AND Events.Inform > NOW() - 24 *
+      filter: Events.Inform <= NOW() - 15 * 60 * 1000 AND Events.Inform > NOW() - 24 *
         60 * 60 * 1000
-      label: "'Offline >1h'"
-    3_past30d:
+      label: "'Offline <1d'"
+    2_offline_gt_1d:
       color: "'#ff5252'"
-      filter: Events.Inform <= NOW() - 24 * 60 * 60 * 1000 AND Events.Inform > NOW() -
-        30 * 24 * 60 * 60 * 1000
+      filter: Events.Inform <= NOW() - 24 * 60 * 60 * 1000
       label: "'Offline >1d'"
-    4_older:
-      color: "'#7b1fa2'"
-      filter: Events.Inform <= NOW() - 30 * 24 * 60 * 60 * 1000
-      label: "'Offline >30d'"
 registered:
   label: "'Registered'"
   slices:
-    0_recent10m:
+    0_registered_lt_1d:
       color: "'#1fde5a'"
-      filter: Events.Registered > NOW() - 10 * 60 * 1000
-      label: "'Registered <10m'"
-    1_past1h:
-      color: "'#d1de1f'"
-      filter: Events.Registered <= NOW() - 10 * 60 * 1000 AND Events.Registered >
-        NOW() - 60 * 60 * 1000
-      label: "'Registered <1h'"
-    2_past24h:
+      filter: Events.Registered > NOW() - 24 * 60 * 60 * 1000
+      label: "'Registered <1d'"
+    1_registered_lt_30d:
       color: "'#f28f00'"
-      filter: Events.Registered <= NOW() - 60 * 60 * 1000 AND Events.Registered >
-        NOW() - 24 * 60 * 60 * 1000
-      label: "'Registered <24h'"
-    3_past30d:
-      color: "'#ff5252'"
       filter: Events.Registered <= NOW() - 24 * 60 * 60 * 1000 AND Events.Registered >
         NOW() - 30 * 24 * 60 * 60 * 1000
       label: "'Registered <30d'"
-    4_older:
-      color: "'#7b1fa2'"
+    2_registered_gt_30d:
+      color: "'#ff5252'"
       filter: Events.Registered <= NOW() - 30 * 24 * 60 * 60 * 1000
       label: "'Registered >30d'"
 manufacturer:
