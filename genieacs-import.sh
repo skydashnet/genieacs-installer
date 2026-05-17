@@ -285,15 +285,16 @@ apply_ui_customizations() {
             else
                 # --- Light (Premium) Mode Patch ---
                 echo "/* LIGHT PREMIUM PATCH */"
-                echo ':root { --color1: #ddd !important; --color2: #ccc !important; --color3: #fdfdfd !important; --color4: #00bfaf !important; --color5: #333 !important; }'
+                echo ':root { --color1: #ddd !important; --color2: #ccc !important; --color3: #fdfdfd !important; --color4: #008f83 !important; --color5: #333 !important; }'
                 echo '#header { background-color: #fff !important; border-bottom: 1px solid #ddd !important; }'
                 echo '#side-menu > ul > li > a { background-color: #f9f9f9 !important; color: #333 !important; border: 1px solid #eee !important; }'
-                echo '#side-menu > ul > li > a:hover { background-color: #00bfaf !important; color: #fff !important; }'
-                echo 'table.table th { color: #00bfaf !important; border-bottom: 2px solid #00bfaf !important; }'
+                echo '#side-menu > ul > li > a:hover { background-color: #008f83 !important; color: #fff !important; }'
+                echo 'table.table th { color: #008f83 !important; border-bottom: 2px solid #008f83 !important; }'
                 echo 'table.table.highlight > tbody > tr:hover { background-color: #f0fdfc !important; }'
                 echo 'input, select, textarea, .CodeMirror { background-color: #fff !important; border-color: #ddd !important; }'
-                echo 'button.primary { background-color: #00bfaf !important; color: #fff !important; }'
-                echo 'span.tag { background-color: #f0fdfc !important; background-image: none !important; color: #00bfaf !important; border: 1px solid #00bfaf !important; padding: 2px 8px !important; }'
+                echo 'button.primary { background-color: #008f83 !important; color: #fff !important; }'
+                echo 'button.primary:hover { background-color: #006b62 !important; }'
+                echo 'span.tag { background-color: #f0fdfc !important; background-image: none !important; color: #008f83 !important; border: 1px solid #008f83 !important; padding: 2px 8px !important; }'
             fi
         fi
     } >> "$css_file"
