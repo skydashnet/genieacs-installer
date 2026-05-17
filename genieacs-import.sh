@@ -376,6 +376,20 @@ if [[ -z "$ACS_URL" ]]; then
     fi
 fi
 
+# --- Confirmation Warning ---
+if [[ -t 0 ]]; then
+    echo -e "\n${RED}========================================================================${NC}"
+    echo -e "${RED}WARNING: This script will overwrite your existing GenieACS configurations.${NC}"
+    echo -e "${RED}Any manual changes made via the Web UI (Provisions, VParams, Configs)${NC}"
+    echo -e "${RED}will be replaced by the files in this repository.${NC}"
+    echo -e "${RED}========================================================================${NC}"
+    read -p "Are you sure you want to proceed and overwrite local changes? [y/N]: " confirm_exec
+    if [[ "$confirm_exec" != "y" && "$confirm_exec" != "Y" ]]; then
+        echo -e "${BLUE}Import aborted. No changes were made.${NC}"
+        exit 0
+    fi
+fi
+
 case $MODE in
     full)
         import_provisions
