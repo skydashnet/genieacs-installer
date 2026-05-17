@@ -42,6 +42,7 @@ usage() {
     echo "                     vanilla: Only Custom Branding"
     echo "                     light:   Premium White-label + Custom Font + Sharp Corners"
     echo "                     dark:    Midnight Dark Mode + Custom Font + Sharp Corners"
+    echo "  --yes            Skip confirmation prompts (for cron/automation)"
     echo "  --help           Show this help"
     echo ""
     echo "If no options are provided, the script runs in interactive mode."
@@ -308,6 +309,10 @@ MODE="interactive"
 INDEX_TYPE="both" # Default to both if not specified
 ACS_URL=""
 THEME="light" # Default theme
+AUTO_CONFIRM=false
+
+# Check if arguments were passed
+[[ "$#" -eq 0 ]] && WAS_INTERACTIVE=true || WAS_INTERACTIVE=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -315,6 +320,7 @@ while [[ "$#" -gt 0 ]]; do
         --index-type) INDEX_TYPE="$2"; shift ;;
         --acs-url) ACS_URL="$2"; shift ;;
         --theme) THEME="$2"; shift ;;
+        --yes|-y) AUTO_CONFIRM=true ;;
         --help) usage; exit 0 ;;
         *) echo "Unknown parameter: $1"; usage; exit 1 ;;
     esac
@@ -377,7 +383,7 @@ if [[ -z "$ACS_URL" ]]; then
 fi
 
 # --- Confirmation Warning ---
-if [[ -t 0 ]]; then
+if [[ -t 0 && "$AUTO_CONFIRM" == false && "$WAS_INTERACTIVE" == true ]]; then
     echo -e "\n${RED}========================================================================${NC}"
     echo -e "${RED}WARNING: This script will overwrite your existing GenieACS configurations.${NC}"
     echo -e "${RED}Any manual changes made via the Web UI (Provisions, VParams, Configs)${NC}"
