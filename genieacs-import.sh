@@ -435,5 +435,5 @@ systemctl restart genieacs-ui 2>/dev/null || echo -e "${RED}Warning: Could not r
 echo -e "\n${GREEN}========================================================================${NC}"
 echo -e "${GREEN}Import Complete!${NC}"
 echo -e "${BLUE}Tip: You can change the UI theme or update virtual parameters at any time${NC}"
-echo -e "${BLUE}by running this script again. (e.g., sudo ./genieacs-import.sh)${NC}"
+echo -e "${BLUE}by pulling the repo and running this script again. (git pull && sudo ./genieacs-import.sh)${NC}"
 echo -e "${GREEN}========================================================================${NC}"
