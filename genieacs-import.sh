@@ -35,8 +35,7 @@ show_header
 usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
-    echo "  --full           Full Import (Provisions + VParams + Config)"
-    echo "  --vparams        Import only Virtual Parameters"
+    echo "  --mode <m>       Import mode (full/vparams)"
     echo "  --index-type <t> Select Index Page Layout (wanip/wanppp)"
     echo "  --acs-url <url>  Set ACS URL (domain or IP) for inform.js"
     echo "  --theme <name>   Select theme:"
@@ -311,8 +310,7 @@ THEME="light" # Default theme
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --full) MODE="full" ;;
-        --vparams) MODE="vparams" ;;
+        --mode) MODE="$2"; shift ;;
         --index-type) INDEX_TYPE="$2"; shift ;;
         --acs-url) ACS_URL="$2"; shift ;;
         --theme) THEME="$2"; shift ;;
