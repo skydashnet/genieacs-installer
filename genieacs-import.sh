@@ -358,11 +358,11 @@ if [[ "$MODE" == "full" && "$INDEX_TYPE" == "both" ]]; then
         case $index_choice in
             1) INDEX_TYPE="wanip" ;;
             2) INDEX_TYPE="wanppp" ;;
-            *) INDEX_TYPE="wanip" ;; # Default
+            *) INDEX_TYPE="wanppp" ;; # Default
         esac
     else
         # Non-interactive default
-        INDEX_TYPE="wanip"
+        INDEX_TYPE="wanppp"
     fi
 fi
 
