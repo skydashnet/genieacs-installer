@@ -271,7 +271,7 @@ apply_ui_customizations() {
                 echo '.CodeMirror-linenumber { color: #666 !important; }'
                 echo '.pie-chart > svg > path { stroke: #222 !important; }'
                 echo '.all-parameters > .parameter-list > table > tbody > tr:hover { background-color: #222 !important; }'
-                echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; }'
+                echo '.autocomplete { background-color: #1a1a1a !important; color: #eee !important; box-shadow: 0 5px 20px rgba(0,0,0,0.9) !important; border-color: #333 !important; }'
                 echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; box-shadow: 0 5px 20px rgba(0,0,0,0.9) !important; }'
                 echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #eee !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
                 echo '.overview-dot > svg > circle { stroke: #222 !important; }'
