@@ -37,6 +37,7 @@ usage() {
     echo "Options:"
     echo "  --full           Full Import (Provisions + VParams + Config)"
     echo "  --vparams        Import only Virtual Parameters"
+    echo "  --index-type <t> Select Index Page Layout (wanip/wanppp)"
     echo "  --acs-url <url>  Set ACS URL (domain or IP) for inform.js"
     echo "  --theme <name>   Select theme:"
     echo "                     vanilla: Only Custom Branding"
