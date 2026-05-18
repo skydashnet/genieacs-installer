@@ -66,8 +66,6 @@ declare("VirtualParameters.SSID5-Security", { path: fiveMin, value: fiveMin });
 declare("VirtualParameters.TotalStations", { path: fiveMin, value: fiveMin });
 
 
-
-
 // ==========================================
 // 5. VLAN & INTERFACE BINDING (Virtual Parameters)
 // ==========================================
