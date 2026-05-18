@@ -4,6 +4,8 @@
 - element: "'div'"
   type: "'container'"
   components:
+    - chart: "'online-short'"
+      type: "'overview-dot'"
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.DeviceInfo.HardwareVersion
