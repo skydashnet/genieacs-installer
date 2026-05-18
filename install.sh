@@ -76,6 +76,15 @@ echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-keyring.gpg ] http://re
 apt-get update
 apt-get install -y mongodb-org
 
+# Workaround for MongoDB compatibility with Linux Kernel 6.19+ (TCMalloc rseq crash)
+echo -e "${BLUE}Configuring systemd override for MongoDB (disabling rseq)...${NC}"
+mkdir -p /etc/systemd/system/mongod.service.d
+cat <<EOF > /etc/systemd/system/mongod.service.d/override.conf
+[Service]
+Environment="GLIBC_TUNABLES=glibc.pthread.rseq=0"
+EOF
+systemctl daemon-reload
+
 systemctl enable mongod
 systemctl start mongod
 
