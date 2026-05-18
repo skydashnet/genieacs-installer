@@ -1,4 +1,3 @@
-const cacheAge = 600000; // 10 minutes
 let m = "";
 let writable = true;
 
@@ -15,15 +14,15 @@ if (args[1].value) {
   declare("InternetGatewayDevice.X_ZTE-COM_UserInterface.X_ZTE-COM_WebUserInfo.AdminPassword", null, {value: m});
 }
 else {
-  let xcu = declare("InternetGatewayDevice.X_CU_Function.Web.AdminPassword", {value: Date.now() - cacheAge});
-  let xauth = declare("InternetGatewayDevice.X_Authentication.WebAccount.Password", {value: Date.now() - cacheAge});
-  let xhw = declare("InternetGatewayDevice.UserInterface.X_HW_WebUserInfo.2.Password", {value: Date.now() - cacheAge});
-  let xct = declare("InternetGatewayDevice.DeviceInfo.X_CT-COM_TeleComAccount.Password", {value: Date.now() - cacheAge});
-  let xcmcc = declare("InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Password", {value: Date.now() - cacheAge});
-  let xfh = declare("InternetGatewayDevice.DeviceInfo.X_FH_Account.X_FH_WebUserInfo.WebSuperPassword", {value: Date.now() - cacheAge});
-  let user = declare("InternetGatewayDevice.User.1.Password", {value: Date.now() - cacheAge});
-  let xzte = declare("InternetGatewayDevice.UserInterface.X_ZTE-COM_WebUserInfo.AdminPassword", {value: Date.now() - cacheAge});
-  let xzte0 = declare("InternetGatewayDevice.X_ZTE-COM_UserInterface.X_ZTE-COM_WebUserInfo.AdminPassword", {value: Date.now() - cacheAge});
+  let xcu = declare("InternetGatewayDevice.X_CU_Function.Web.AdminPassword", {value: Date.now()});
+  let xauth = declare("InternetGatewayDevice.X_Authentication.WebAccount.Password", {value: Date.now()});
+  let xhw = declare("InternetGatewayDevice.UserInterface.X_HW_WebUserInfo.2.Password", {value: Date.now()});
+  let xct = declare("InternetGatewayDevice.DeviceInfo.X_CT-COM_TeleComAccount.Password", {value: Date.now()});
+  let xcmcc = declare("InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Password", {value: Date.now()});
+  let xfh = declare("InternetGatewayDevice.DeviceInfo.X_FH_Account.X_FH_WebUserInfo.WebSuperPassword", {value: Date.now()});
+  let user = declare("InternetGatewayDevice.User.1.Password", {value: Date.now()});
+  let xzte = declare("InternetGatewayDevice.UserInterface.X_ZTE-COM_WebUserInfo.AdminPassword", {value: Date.now()});
+  let xzte0 = declare("InternetGatewayDevice.X_ZTE-COM_UserInterface.X_ZTE-COM_WebUserInfo.AdminPassword", {value: Date.now()});
   if (xcu.size) {
     m = xcu.value[0];
   } else if (xauth.size) {

@@ -1,4 +1,3 @@
-const cacheAge = 600000; // 10 minutes
 let m = "";
 const instanceIndex = '1';
 
@@ -7,7 +6,7 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.SSID`, null, {value: m});
 }
 else {
-  let ssid1 = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.SSID`, {value: Date.now() - cacheAge});
+  let ssid1 = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.SSID`, {value: Date.now()});
   if (ssid1.size) {
     m = ssid1.value[0];
   }

@@ -1,9 +1,8 @@
-const cacheAge = 600000; // 10 minutes
 let result = '';
 
 function getParameterValue(keys) {
     for (let key of keys) {
-        let d = declare(key, {path: Date.now() - (120 * 1000), value: Date.now() - cacheAge});
+        let d = declare(key, {path: Date.now() - (120 * 1000), value: Date.now()});
 
         for (let item of d) {
             if (item.value && item.value[0] >= 0 ) {

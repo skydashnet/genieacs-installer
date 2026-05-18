@@ -1,12 +1,11 @@
-const cacheAge = 600000; // 10 minutes
 let result = '';
 
 function getParameterValue(keys) {
     for (let key of keys) {
-        let keyConnType = declare(key.replace('ExternalIPAddress', 'ConnectionType'), {value: Date.now() - cacheAge});
-        let keyNat = declare(key.replace('ExternalIPAddress', 'NATEnabled'), {value: Date.now() - cacheAge});
+        let keyConnType = declare(key.replace('ExternalIPAddress', 'ConnectionType'), {value: Date.now()});
+        let keyNat = declare(key.replace('ExternalIPAddress', 'NATEnabled'), {value: Date.now()});
         if (keyConnType.size && keyNat.size && keyConnType.value[0] === 'IP_Routed' && (keyNat.value[0] === true || (typeof keyNat.value[0] === "string" && keyNat.value[0].toLowerCase() === "true"))){
-            return declare(key, {value: Date.now() - cacheAge}).value[0];
+            return declare(key, {value: Date.now()}).value[0];
         }
     }
     return 'N/A';

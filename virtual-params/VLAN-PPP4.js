@@ -1,4 +1,3 @@
-const cacheAge = 600000; // 10 minutes
 let m = "";
 const instanceIndex = '4';
 let writable = true;
@@ -12,11 +11,11 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_VLANIDMark`, null, {value: m});
 }
 else {
-  let xct = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.X_CT-COM_WANEponLinkConfig.VLANIDMark`, {value: Date.now() - cacheAge});
-  let xhw0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_HW_VLAN`, {value: Date.now() - cacheAge});
-  let xhw1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_HW_VLAN`, {value: Date.now() - cacheAge});
-  let cmcc0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_CMCC_VLANIDMark`, {value: Date.now() - cacheAge});
-  let cmcc1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_VLANIDMark`, {value: Date.now() - cacheAge});
+  let xct = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.X_CT-COM_WANEponLinkConfig.VLANIDMark`, {value: Date.now()});
+  let xhw0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_HW_VLAN`, {value: Date.now()});
+  let xhw1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_HW_VLAN`, {value: Date.now()});
+  let cmcc0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_CMCC_VLANIDMark`, {value: Date.now()});
+  let cmcc1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_VLANIDMark`, {value: Date.now()});
   if (xct.size) {
     m = xct.value[0];
   } else if (xhw0.size) {
