@@ -73,9 +73,7 @@ if (product != "GM220-S" &&
     product != "TOTOLINK_N100RE" &&
     product != "TOTOLINK_N200RE" &&
     product != "TOTOLINK_N300RT") {
-    declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.HostName", { path: fiveMin, value: fiveMin });
-    declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.IPAddress", { path: fiveMin, value: fiveMin });
-    declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.MACAddress", { path: fiveMin, value: fiveMin });
+    declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.*", { path: hourly, value: hourly });
 }
 
 
