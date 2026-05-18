@@ -2,6 +2,9 @@
 - type: "'ping'"
 - type: "'device-actions'"
 - type: "'summon-button'"
+  parameters:
+    - InternetGatewayDevice.*
+    - Device.*
 - element: '"div"'
   type: "'container'"
   components:
