@@ -243,7 +243,7 @@ apply_ui_customizations() {
         
         # --- Common Branding (All Themes) ---
         echo "/* BRANDING PATCH */"
-        echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; color: #00bfaf !important; font-weight: bold !important; }'
+        echo '.version::after { content: " | Customized by EtherGig" !important; display: inline !important; color: #007fff !important; font-weight: bold !important; }'
 
         if [[ "$THEME" == "vanilla" ]]; then
             echo "/* VANILLA MODE: Only Branding Applied */"
@@ -263,7 +263,7 @@ apply_ui_customizations() {
                 echo 'body, #content-wrapper { background-color: #222 !important; color: #eee !important; }'
                 echo '#header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }'
                 echo '#side-menu > ul > li > a { background-color: #1a1a1a !important; color: #aaa !important; border: 1px solid #333 !important; }'
-                echo '#side-menu > ul > li > a:hover, #side-menu > ul > li.active > a, #side-menu > ul > li > a.active { background-color: #333 !important; color: #00bfaf !important; border-color: #444 !important; }'
+                echo '#side-menu > ul > li > a:hover, #side-menu > ul > li.active > a, #side-menu > ul > li > a.active { background-color: #333 !important; color: #007fff !important; border-color: #444 !important; }'
                 echo 'table.table th { color: #fff !important; border-bottom: 2px solid #444 !important; }'
                 echo 'table.table.highlight > tbody > tr:hover { background-color: #222 !important; }'
                 echo 'input, select, textarea, .CodeMirror { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; }'
@@ -275,8 +275,8 @@ apply_ui_customizations() {
                 echo '.overlay-wrapper > .overlay { background-color: #1a1a1a !important; color: #eee !important; border-color: #333 !important; box-shadow: 0 5px 20px rgba(0,0,0,0.9) !important; }'
                 echo 'span.tag { background-color: #333 !important; background-image: none !important; color: #eee !important; border: 1px solid #444 !important; padding: 2px 8px !important; }'
                 echo '.overview-dot > svg > circle { stroke: #222 !important; }'
-                echo 'button.primary { background-color: #00bfaf !important; color: #111 !important; }'
-                echo 'button.primary:hover { background-color: #008f83 !important; }'
+                echo 'button.primary { background-color: #007fff !important; color: #fff !important; }'
+                echo 'button.primary:hover { background-color: #0066cc !important; }'
                 echo '.CodeMirror { border-color: #333 !important; }'
                 echo '.CodeMirror span.cm-keyword { color: #c678dd !important; }'
                 echo '.CodeMirror span.cm-operator { color: #56b6c2 !important; }'
@@ -291,21 +291,21 @@ apply_ui_customizations() {
                 echo '.notification { background-color: #1a1a1ae6 !important; color: #eee !important; border-color: #333 !important; box-shadow: 0 5px 20px rgba(0,0,0,0.9) !important; }'
                 echo '.drawer input { background-color: #222 !important; color: #eee !important; border-color: #444 !important; }'
                 echo '.drawer .parameter, .drawer .value { color: #ccc !important; }'
-                echo '.notification.success { background-color: #004d40e6 !important; border-color: #00bfaf !important; }'
+                echo '.notification.success { background-color: #002244e6 !important; border-color: #007fff !important; }'
                 echo '.notification.error { background-color: #4d0000e6 !important; border-color: #ff5252 !important; }'
             else
                 # --- Light (Premium) Mode Patch ---
                 echo "/* LIGHT PREMIUM PATCH */"
-                echo ':root { --color1: #ddd !important; --color2: #ccc !important; --color3: #fdfdfd !important; --color4: #008f83 !important; --color5: #333 !important; }'
+                echo ':root { --color1: #ddd !important; --color2: #ccc !important; --color3: #fdfdfd !important; --color4: #007fff !important; --color5: #333 !important; }'
                 echo '#header { background-color: #fff !important; border-bottom: 1px solid #ddd !important; }'
                 echo '#side-menu > ul > li > a { background-color: #f9f9f9 !important; color: #333 !important; border: 1px solid #eee !important; }'
-                echo '#side-menu > ul > li > a:hover { background-color: #008f83 !important; color: #fff !important; }'
-                echo 'table.table th { color: #008f83 !important; border-bottom: 2px solid #008f83 !important; }'
-                echo 'table.table.highlight > tbody > tr:hover { background-color: #f0fdfc !important; }'
+                echo '#side-menu > ul > li > a:hover { background-color: #007fff !important; color: #fff !important; }'
+                echo 'table.table th { color: #007fff !important; border-bottom: 2px solid #007fff !important; }'
+                echo 'table.table.highlight > tbody > tr:hover { background-color: #f0f7ff !important; }'
                 echo 'input, select, textarea, .CodeMirror { background-color: #fff !important; border-color: #ddd !important; }'
-                echo 'button.primary { background-color: #008f83 !important; color: #fff !important; }'
-                echo 'button.primary:hover { background-color: #006b62 !important; }'
-                echo 'span.tag { background-color: #f0fdfc !important; background-image: none !important; color: #008f83 !important; border: 1px solid #008f83 !important; padding: 2px 8px !important; }'
+                echo 'button.primary { background-color: #007fff !important; color: #fff !important; }'
+                echo 'button.primary:hover { background-color: #0066cc !important; }'
+                echo 'span.tag { background-color: #f0f7ff !important; background-image: none !important; color: #007fff !important; border: 1px solid #007fff !important; padding: 2px 8px !important; }'
             fi
         fi
     } >> "$css_file"
