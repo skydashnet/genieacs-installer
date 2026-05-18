@@ -298,14 +298,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*
-        - VirtualParameters.VLAN-IP1
-        - VirtualParameters.VLAN-IP2
-        - VirtualParameters.VLAN-IP3
-        - VirtualParameters.VLAN-IP4
-        - VirtualParameters.Binding-IP1
-        - VirtualParameters.Binding-IP2
-        - VirtualParameters.Binding-IP3
-        - VirtualParameters.Binding-IP4
     - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection
       type: "'parameter-table'"
       childParameters:
@@ -479,10 +471,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*
-        - VirtualParameters.VLAN-IP1
-        - VirtualParameters.VLAN-IP2
-        - VirtualParameters.VLAN-IP3
-        - VirtualParameters.VLAN-IP4
         - VirtualParameters.Binding-IP1
         - VirtualParameters.Binding-IP2
         - VirtualParameters.Binding-IP3
@@ -598,14 +586,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*
-        - VirtualParameters.VLAN-IP1
-        - VirtualParameters.VLAN-IP2
-        - VirtualParameters.VLAN-IP3
-        - VirtualParameters.VLAN-IP4
-        - VirtualParameters.Binding-IP1
-        - VirtualParameters.Binding-IP2
-        - VirtualParameters.Binding-IP3
-        - VirtualParameters.Binding-IP4
     - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection
       type: "'parameter-table'"
       childParameters:
@@ -975,14 +955,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*
-        - VirtualParameters.VLAN-PPP1
-        - VirtualParameters.VLAN-PPP2
-        - VirtualParameters.VLAN-PPP3
-        - VirtualParameters.VLAN-PPP4
-        - VirtualParameters.Binding-PPP1
-        - VirtualParameters.Binding-PPP2
-        - VirtualParameters.Binding-PPP3
-        - VirtualParameters.Binding-PPP4
     - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection
       type: "'parameter-table'"
       childParameters:
@@ -1140,10 +1112,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*
-        - VirtualParameters.VLAN-PPP1
-        - VirtualParameters.VLAN-PPP2
-        - VirtualParameters.VLAN-PPP3
-        - VirtualParameters.VLAN-PPP4
         - VirtualParameters.Binding-PPP1
         - VirtualParameters.Binding-PPP2
         - VirtualParameters.Binding-PPP3
@@ -1243,14 +1211,6 @@
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*
-        - VirtualParameters.VLAN-PPP1
-        - VirtualParameters.VLAN-PPP2
-        - VirtualParameters.VLAN-PPP3
-        - VirtualParameters.VLAN-PPP4
-        - VirtualParameters.Binding-PPP1
-        - VirtualParameters.Binding-PPP2
-        - VirtualParameters.Binding-PPP3
-        - VirtualParameters.Binding-PPP4
     - parameter: InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection
       type: "'parameter-table'"
       childParameters:
