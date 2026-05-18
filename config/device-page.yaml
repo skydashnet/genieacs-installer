@@ -1,6 +1,7 @@
 - type: "'tags'"
 - type: "'ping'"
 - type: "'device-actions'"
+- type: "'summon-button'"
 - element: '"div"'
   type: "'container'"
   components:
