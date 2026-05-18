@@ -393,17 +393,26 @@ if [[ -z "$ACS_URL" ]]; then
 fi
 
 # --- Confirmation Warning ---
+echo -e "\n${RED}========================================================================${NC}"
+echo -e "${RED}WARNING: This script will overwrite your existing GenieACS configurations.${NC}"
+echo -e "${RED}Any manual changes made via the Web UI (Provisions, VParams, Configs)${NC}"
+echo -e "${RED}will be replaced by the files in this repository.${NC}"
+echo -e "${RED}========================================================================${NC}"
+
 if [[ -t 0 && "$AUTO_CONFIRM" == false ]]; then
-    echo -e "\n${RED}========================================================================${NC}"
-    echo -e "${RED}WARNING: This script will overwrite your existing GenieACS configurations.${NC}"
-    echo -e "${RED}Any manual changes made via the Web UI (Provisions, VParams, Configs)${NC}"
-    echo -e "${RED}will be replaced by the files in this repository.${NC}"
-    echo -e "${RED}========================================================================${NC}"
     read -p "Are you sure you want to proceed and overwrite local changes? [y/N]: " confirm_exec
     if [[ "$confirm_exec" != "y" && "$confirm_exec" != "Y" ]]; then
         echo -e "${BLUE}Import aborted. No changes were made.${NC}"
         exit 0
     fi
+else
+    echo -e "${BLUE}Auto-confirm enabled or non-interactive environment detected.${NC}"
+    echo -e "${RED}Starting import in 5 seconds... Press Ctrl+C to abort.${NC}"
+    for i in {5..1}; do
+        echo -ne "${RED}$i... ${NC}"
+        sleep 1
+    done
+    echo ""
 fi
 
 case $MODE in
