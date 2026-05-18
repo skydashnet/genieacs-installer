@@ -10,7 +10,6 @@
       parameters:
         - InternetGatewayDevice.DeviceInfo.HardwareVersion
         - InternetGatewayDevice.DeviceInfo.SoftwareVersion
-        - InternetGatewayDevice.LANDevice.*.Hosts.Host.*.*
         - InternetGatewayDevice.LANDevice.*.LANEthernetInterfaceConfig.*.*
         - InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.*
         - InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*
