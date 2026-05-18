@@ -393,7 +393,7 @@ if [[ -z "$ACS_URL" ]]; then
 fi
 
 # --- Confirmation Warning ---
-if [[ -t 0 && "$AUTO_CONFIRM" == false && "$WAS_INTERACTIVE" == true ]]; then
+if [[ -t 0 && "$AUTO_CONFIRM" == false ]]; then
     echo -e "\n${RED}========================================================================${NC}"
     echo -e "${RED}WARNING: This script will overwrite your existing GenieACS configurations.${NC}"
     echo -e "${RED}Any manual changes made via the Web UI (Provisions, VParams, Configs)${NC}"
