@@ -65,16 +65,7 @@ declare("VirtualParameters.SSID5-Password", { path: fiveMin, value: fiveMin });
 declare("VirtualParameters.SSID5-Security", { path: fiveMin, value: fiveMin });
 declare("VirtualParameters.TotalStations", { path: fiveMin, value: fiveMin });
 
-// Hostname query with product class guard (excludes specific low-RAM devices)
-let productClass = declare('DeviceID.ProductClass', { value: fiveMin });
-const product = productClass && productClass.value && productClass.value[0] ? productClass.value[0] : '';
-if (product != "GM220-S" &&
-    product != "GM630" &&
-    product != "TOTOLINK_N100RE" &&
-    product != "TOTOLINK_N200RE" &&
-    product != "TOTOLINK_N300RT") {
-    declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.*", { path: hourly, value: hourly });
-}
+
 
 
 // ==========================================
