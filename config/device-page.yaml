@@ -42,6 +42,9 @@
         - VirtualParameters.SSID1-Name
         - VirtualParameters.SSID1-Password
         - VirtualParameters.SSID1-Security
+        - VirtualParameters.SSID5-Name
+        - VirtualParameters.SSID5-Password
+        - VirtualParameters.SSID5-Security
         - VirtualParameters.TotalStations
         - VirtualParameters.VLAN-IP1
         - VirtualParameters.VLAN-IP2
@@ -163,6 +166,9 @@
         - VirtualParameters.SSID1-Name
         - VirtualParameters.SSID1-Password
         - VirtualParameters.SSID1-Security
+        - VirtualParameters.SSID5-Name
+        - VirtualParameters.SSID5-Password
+        - VirtualParameters.SSID5-Security
         - InternetGatewayDevice.WANDevice.1.WANConnectionNumberOfEntries
         - VirtualParameters.PPPUsername
         - VirtualParameters.LoginSuperUser
@@ -215,6 +221,12 @@
       parameter: VirtualParameters.SSID1-Password
     - label: "'SSID1 Security'"
       parameter: VirtualParameters.SSID1-Security
+    - label: "'SSID5 Name'"
+      parameter: VirtualParameters.SSID5-Name
+    - label: "'SSID5 Password'"
+      parameter: VirtualParameters.SSID5-Password
+    - label: "'SSID5 Security'"
+      parameter: VirtualParameters.SSID5-Security
     - label: "'Total Stations'"
       parameter: VirtualParameters.TotalStations
 - element: '"div"'
