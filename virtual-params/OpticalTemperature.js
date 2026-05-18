@@ -3,13 +3,13 @@ let result = '';
 
 function getParameterValue(keys) {
     for (let key of keys) {
-        let d = declare(key, {path: Date.now() - (120 * 1000), value: Date.now() - cacheAge});
+        let d = declare(key, { path: Date.now() - (120 * 1000), value: Date.now() - cacheAge });
 
         for (let item of d) {
-            if (item.value && item.value[0] >= 100 ) {
+            if (item.value && item.value[0] >= 100) {
                 return Math.round(item.value[0] / 255);
             } else if (item.value && item.value[0] < 100) {
-                return item.value[0]; 
+                return item.value[0];
             }
         }
     }
@@ -26,11 +26,12 @@ if ("value" in args[1]) {
         'InternetGatewayDevice.WANDevice.1.X_CMCC_EponInterfaceConfig.TransceiverTemperature',
         'InternetGatewayDevice.WANDevice.1.X_CMCC_EponInterfaceConfig.RXPower',
         'InternetGatewayDevice.WANDevice.1.X_CU_WANEPONInterfaceConfig.OpticalTransceiver.Temperature',
-      	'InternetGatewayDevice.WANDevice.1.X_ZTE-COM_WANPONInterfaceConfig.TransceiverTemperature',
-      	'InternetGatewayDevice.WANDevice.1.X_FH_GponInterfaceConfig.TransceiverTemperature'
+        'InternetGatewayDevice.WANDevice.1.X_ZTE-COM_WANPONInterfaceConfig.TransceiverTemperature',
+        'InternetGatewayDevice.WANDevice.1.X_FH_GponInterfaceConfig.TransceiverTemperature',
+        'InternetGatewayDevice.DeviceInfo.TemperatureStatus.TemperatureSensor.2.Value'
     ];
 
     result = getParameterValue(keys);
 }
 
-return {writable: false, value: [result, "xsd:int"]};
+return { writable: false, value: [result, "xsd:int"] };
