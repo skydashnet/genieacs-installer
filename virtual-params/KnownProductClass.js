@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let result = "Other"
 const knownProductClass = [
     "F460",
@@ -31,7 +32,7 @@ const knownProductClass = [
     "ZXHN F450(EPON ONU)"
 ];
 
-let prod = declare("DeviceID.ProductClass", {value: Date.now()});
+let prod = declare("DeviceID.ProductClass", {value: Date.now() - cacheAge});
 if(knownProductClass.includes(prod.value[0])){
     result = prod.value[0];
 } else {

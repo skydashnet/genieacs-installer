@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let m = "";
 const instanceIndex = '1';
 
@@ -8,7 +9,7 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.PreSharedKey.1.KeyPassphrase`, null, {value: m});
 
   // Try to read back the declared value
-  let pskCheck = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.PreSharedKey.1.KeyPassphrase`, {value: Date.now()});
+  let pskCheck = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.PreSharedKey.1.KeyPassphrase`, {value: Date.now() - cacheAge});
   
   // Only declare the second one if the first did not succeed
   if (!pskCheck.size || !pskCheck.value) {
@@ -16,8 +17,8 @@ if (args[1].value) {
   }
 }
 else {
-  let psk = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.PreSharedKey.1.KeyPassphrase`, {value: Date.now()});
-  let kp = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.KeyPassphrase`, {value: Date.now()});
+  let psk = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.PreSharedKey.1.KeyPassphrase`, {value: Date.now() - cacheAge});
+  let kp = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.KeyPassphrase`, {value: Date.now() - cacheAge});
   if (psk.size) {
     m = psk.value[0];
   } else if (kp.size) {

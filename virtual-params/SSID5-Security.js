@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let m = "";
 const instanceIndex = '5';
 
@@ -6,7 +7,7 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.BeaconType`, null, {value: m});
 }
 else {
-  let ssid1 = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.BeaconType`, {value: Date.now()});
+  let ssid1 = declare(`InternetGatewayDevice.LANDevice.1.WLANConfiguration.${instanceIndex}.BeaconType`, {value: Date.now() - cacheAge});
   if (ssid1.size) {
     m = ssid1.value[0];
   }

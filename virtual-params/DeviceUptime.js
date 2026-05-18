@@ -1,5 +1,6 @@
+const cacheAge = 600000; // 10 minutes
 let uptime = 0;
-let res = declare("InternetGatewayDevice.DeviceInfo.UpTime", {path: Date.now() - (120 * 1000), value: Date.now()});
+let res = declare("InternetGatewayDevice.DeviceInfo.UpTime", {path: Date.now() - (120 * 1000), value: Date.now() - cacheAge});
 
 uptime = res.value[0]
 

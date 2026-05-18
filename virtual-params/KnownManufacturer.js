@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let result = "Other"
 const knownManufacturers = [
     "CIOT",
@@ -15,7 +16,7 @@ const knownManufacturers = [
     "ZXIC"
 ];
 
-let manu = declare("DeviceID.Manufacturer", {value: Date.now()});
+let manu = declare("DeviceID.Manufacturer", {value: Date.now() - cacheAge});
 if(knownManufacturers.includes(manu.value[0])){
     result = manu.value[0];
 } else {

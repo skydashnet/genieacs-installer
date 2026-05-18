@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let m = "";
 const instanceIndex = '1';
 let writable = true;
@@ -9,9 +10,9 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_LanInterface`, null, {value: m});
 }
 else {
-  let xct = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CT-COM_LanInterface`, {value: Date.now()});
-  let cmcc0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_CMCC_LanInterface`, {value: Date.now()});
-  let cmcc1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_LanInterface`, {value: Date.now()});
+  let xct = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CT-COM_LanInterface`, {value: Date.now() - cacheAge});
+  let cmcc0 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.${instanceIndex}.X_CMCC_LanInterface`, {value: Date.now() - cacheAge});
+  let cmcc1 = declare(`InternetGatewayDevice.WANDevice.1.WANConnectionDevice.${instanceIndex}.WANPPPConnection.1.X_CMCC_LanInterface`, {value: Date.now() - cacheAge});
   if (xct.size) {
     m = xct.value[0];
   } else if (cmcc0.size) {

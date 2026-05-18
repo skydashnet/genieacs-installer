@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let m = "";
 let writable = true;
 
@@ -7,8 +8,8 @@ if (args[1].value) {
   declare(`InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Username`, null, {value: m});
 }
 else {
-  let xhw = declare(`InternetGatewayDevice.UserInterface.X_HW_WebUserInfo.2.UserName`, {value: Date.now()});
-  let xcmcc = declare(`InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Username`, {value: Date.now()});
+  let xhw = declare(`InternetGatewayDevice.UserInterface.X_HW_WebUserInfo.2.UserName`, {value: Date.now() - cacheAge});
+  let xcmcc = declare(`InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Username`, {value: Date.now() - cacheAge});
   if (xhw.size) {
     m = xhw.value[0];
   } else if (xcmcc.size) {

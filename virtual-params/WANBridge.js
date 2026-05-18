@@ -1,8 +1,9 @@
+const cacheAge = 600000; // 10 minutes
 let result = '';
 
 function getParameterValue(keys) {
     for (let key of keys) {
-        let d = declare(key, {path: Date.now() - (120 * 1000), value: Date.now()});
+        let d = declare(key, {path: Date.now() - (120 * 1000), value: Date.now() - cacheAge});
         for (let item of d) {
             if ((item.value && item.value[0] == "PPPoE_Bridged") || (item.value && item.value[0] == "IP_Bridged") ) {
                return "✅";

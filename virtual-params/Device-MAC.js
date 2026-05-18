@@ -1,3 +1,4 @@
+const cacheAge = 600000; // 10 minutes
 let m = "";
 
 const paths = [
@@ -10,7 +11,7 @@ const paths = [
 ];
 
 for (let path of paths) {
-  let d = declare(path, {value: Date.now()});
+  let d = declare(path, {value: Date.now() - cacheAge});
   for (let item of d) {
     if (item.value && item.value[0] && item.value[0] !== "00:00:00:00:00:00") {
       m = item.value[0];
