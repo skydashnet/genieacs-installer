@@ -79,7 +79,7 @@ echo -e "${BLUE}Pre-configuring systemd override for MongoDB to prevent rseq cra
 mkdir -p /etc/systemd/system/mongod.service.d
 cat <<EOF > /etc/systemd/system/mongod.service.d/override.conf
 [Service]
-Environment="GLIBC_TUNABLES=glibc.pthread.rseq=0"
+Environment="GLIBC_TUNABLES=glibc.pthread.rseq=1"
 EOF
 
 apt-get update
