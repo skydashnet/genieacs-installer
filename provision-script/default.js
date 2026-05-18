@@ -1,19 +1,20 @@
+const daily = Date.now() - 86400000;
 const hourly = Date.now() - 3600000;
 const fiveMin = Date.now() - 300000;
 
 // ==========================================
 // 1. DEVICE METRICS & SPECIFICATIONS
 // ==========================================
-declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { path: hourly, value: hourly });
-declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { path: daily, value: daily });
+declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", { path: daily, value: daily });
 declare("InternetGatewayDevice.DeviceInfo.UpTime", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.ManagementServer.ConnectionRequestURL", { path: fiveMin, value: fiveMin });
 
 // Device Virtual Parameters
-declare("VirtualParameters.Device-MAC", { path: hourly, value: hourly });
+declare("VirtualParameters.Device-MAC", { path: daily, value: daily });
 declare("VirtualParameters.DeviceUptime", { path: fiveMin, value: fiveMin });
-declare("VirtualParameters.KnownManufacturer", { path: hourly, value: hourly });
-declare("VirtualParameters.KnownProductClass", { path: hourly, value: hourly });
+declare("VirtualParameters.KnownManufacturer", { path: daily, value: daily });
+declare("VirtualParameters.KnownProductClass", { path: daily, value: daily });
 
 
 // ==========================================
@@ -27,7 +28,7 @@ declare("VirtualParameters.OpticalRXPower", { path: fiveMin, value: fiveMin });
 // 3. WAN METRICS & PARAMETERS
 // ==========================================
 // Native WAN Parameters
-declare("InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType", { path: daily, value: daily });
 declare("InternetGatewayDevice.WANDevice.1.WANConnectionNumberOfEntries", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.*", { path: fiveMin, value: fiveMin });
 declare("InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANIPConnection.*.*", { path: fiveMin, value: fiveMin });
@@ -105,5 +106,5 @@ declare("VirtualParameters.Binding-PPP4", { path: fiveMin, value: fiveMin });
 // ==========================================
 // 6. ROUTER LOGIN / ADMINISTRATIVE
 // ==========================================
-declare("VirtualParameters.LoginSuperUser", { path: fiveMin, value: fiveMin });
-declare("VirtualParameters.LoginSuperPass", { path: fiveMin, value: fiveMin });
+declare("VirtualParameters.LoginSuperUser", { path: daily, value: daily });
+declare("VirtualParameters.LoginSuperPass", { path: daily, value: daily });
