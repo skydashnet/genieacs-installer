@@ -2,16 +2,19 @@
   type: "'overview-dot'"
 - type: "'summon-button'"
   parameters:
-    - VirtualParameters.PPPUsername
     - InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType
     - VirtualParameters.OpticalRXPower
     - VirtualParameters.OpticalTemperature
     - VirtualParameters.IP-WANIP
     - VirtualParameters.WANBridge
     - VirtualParameters.TotalStations
+    - InternetGatewayDevice.DeviceInfo.HardwareVersion
     - InternetGatewayDevice.DeviceInfo.SoftwareVersion
     - VirtualParameters.Device-MAC
     - InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries
+    - DeviceID.Manufacturer
+    - DeviceID.ProductClass
+    - DeviceID.SerialNumber
 - label: "'Tags'"
   parameter: Tags
   type: "'tags'"

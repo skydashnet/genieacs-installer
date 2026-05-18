@@ -8,14 +8,15 @@
     - VirtualParameters.OpticalRXPower
     - VirtualParameters.OpticalTemperature
     - VirtualParameters.IP-WANPPP
+    - VirtualParameters.IP-TR069
     - VirtualParameters.WANBridge
     - VirtualParameters.TotalStations
-    - VirtualParameters.SLAPercentage
     - InternetGatewayDevice.DeviceInfo.HardwareVersion
     - InternetGatewayDevice.DeviceInfo.SoftwareVersion
     - InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries
     - VirtualParameters.Device-MAC
     - DeviceID.Manufacturer
+    - DeviceID.ProductClass
     - DeviceID.SerialNumber
 - label: "'PPP Username'"
   parameter: VirtualParameters.PPPUsername
