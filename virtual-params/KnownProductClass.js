@@ -1,6 +1,7 @@
 const cacheAge = 600000; // 10 minutes
 let result = "Other"
 const knownProductClass = [
+    "EG8021V5",
     "F460",
     "F609",
     "F650",

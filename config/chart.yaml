@@ -263,6 +263,10 @@ manufacturer:
 product-class:
   label: "'Product Class'"
   slices:
+    EG8021V5:
+      color: "'#f43f5e'"
+      filter: VirtualParameters.KnownProductClass = "EG8021V5"
+      label: "'EG8021V5'"
     F450:
       color: "'#eab308'"
       filter: VirtualParameters.KnownProductClass = "ZXHN F450(EPON ONU)"
