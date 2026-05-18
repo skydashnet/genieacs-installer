@@ -9,6 +9,7 @@ const knownProductClass = [
     "F663NV9",
     "F670",
     "F670L",
+    "G300L",
     "G663 XPON",
     "G663-XPON",
     "G665 XPON",

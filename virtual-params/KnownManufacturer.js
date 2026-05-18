@@ -13,7 +13,8 @@ const knownManufacturers = [
     "ZICG",
     "ZTE",
     "ZTEG",
-    "ZXIC"
+    "ZXIC",
+    "ZION"
 ];
 
 let manu = declare("DeviceID.Manufacturer", {value: Date.now() - cacheAge});

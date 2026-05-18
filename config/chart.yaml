@@ -240,6 +240,10 @@ manufacturer:
       color: "'#f43f5e'"
       filter: VirtualParameters.KnownManufacturer = "ZICG"
       label: "'ZICG'"
+    ZION:
+      color: "'#0ea5e9'"
+      filter: VirtualParameters.KnownManufacturer = "ZION"
+      label: "'ZION'"
     ZTE:
       color: "'#eab308'"
       filter: VirtualParameters.KnownManufacturer = "ZTE"
@@ -292,6 +296,10 @@ product-class:
       color: "'#a101e0'"
       filter: VirtualParameters.KnownProductClass = "F670L"
       label: "'F670L'"
+    G300L:
+      color: "'#38bdf8'"
+      filter: VirtualParameters.KnownProductClass = "G300L"
+      label: "'G300L'"
     G663:
       color: "'#166534'"
       filter: VirtualParameters.KnownProductClass = "G663 XPON" OR VirtualParameters.KnownProductClass
