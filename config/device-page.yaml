@@ -4,7 +4,6 @@
 - element: "'div'"
   type: "'container'"
   components:
-    - "'🔄 Refresh All Displayed Parameters: '"
     - type: "'summon-button'"
       parameters:
         - InternetGatewayDevice.DeviceInfo.HardwareVersion
@@ -51,6 +50,7 @@
         - VirtualParameters.VLAN-PPP3
         - VirtualParameters.VLAN-PPP4
         - VirtualParameters.WANBridge
+    - "' all parameters'"
 - element: '"div"'
   type: "'container'"
   components:
