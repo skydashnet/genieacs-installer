@@ -73,21 +73,19 @@ curl -fsSL https://pgp.mongodb.com/server-${MONGODB_VERSION}.asc | \
 echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-keyring.gpg ] http://repo.mongodb.org/apt/debian ${CODENAME}/mongodb-org/${MONGODB_VERSION} main" | \
    tee /etc/apt/sources.list.d/mongodb-org-${MONGODB_VERSION}.list
 
-apt-get update
-
 # Workaround for MongoDB compatibility with Linux Kernel 6.19+ (TCMalloc rseq crash)
-# We MUST pre-create this override BEFORE apt-get install, because Debian automatically
-# starts the service during package configuration and would otherwise crash and abort the install.
-echo -e "${BLUE}Pre-configuring systemd override for MongoDB (disabling rseq)...${NC}"
+# We pre-create the override before installation so the package post-inst start command does not crash.
+echo -e "${BLUE}Pre-configuring systemd override for MongoDB to prevent rseq crash during install...${NC}"
 mkdir -p /etc/systemd/system/mongod.service.d
 cat <<EOF > /etc/systemd/system/mongod.service.d/override.conf
 [Service]
 Environment="GLIBC_TUNABLES=glibc.pthread.rseq=0"
 EOF
-systemctl daemon-reload
 
+apt-get update
 apt-get install -y mongodb-org
 
+systemctl daemon-reload
 systemctl enable mongod
 systemctl start mongod
 
