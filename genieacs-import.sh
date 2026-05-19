@@ -300,7 +300,7 @@ apply_ui_customizations() {
             echo "* { border-radius: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }"
 
             echo "/* EDITOR PATCH (BIGGER EDITOR & SMALLER FONT) */"
-            echo ".CodeMirror { height: 480px !important; font-size: 11px !important; }"
+            echo ".CodeMirror { height: 480px !important; font-size: 12.5px !important; }"
             echo ".overlay > .put-form { min-width: 850px !important; }"
 
             if [[ "$THEME" == "dark" ]]; then
