@@ -1,6 +1,9 @@
 {
   "_id": "inform",
   "weight": 0,
+  "channel": "inform",
+  "precondition": "",
+  "events": {},
   "configurations": [
     {
       "type": "provision",

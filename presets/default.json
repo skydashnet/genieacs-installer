@@ -1,6 +1,9 @@
 {
   "_id": "default",
   "weight": 0,
+  "channel": "default",
+  "precondition": "",
+  "events": {},
   "configurations": [
     {
       "type": "provision",
