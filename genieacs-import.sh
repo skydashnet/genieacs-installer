@@ -116,8 +116,16 @@ import_item() {
 prune_all() {
     local type=$1
     echo -e "${BLUE}Pruning local ${type} to ensure clean state...${NC}"
-    local_names=$(curl -s "${NBI_URL}/${type}" | jq -r '.[].name' 2>/dev/null || echo "")
+    local_names=$(curl -s "${NBI_URL}/${type}" | jq -r '.[]._id' 2>/dev/null || curl -s "${NBI_URL}/${type}" | jq -r '.[].name' 2>/dev/null || echo "")
     for name in $local_names; do
+        if [[ "$name" == null || "$name" == "" ]]; then
+            continue
+        fi
+        # Protect custom- prefix files from being pruned
+        if [[ $name == custom-* ]]; then
+            echo -e "${BLUE}Skipping prune of custom protected item: ${name}${NC}"
+            continue
+        fi
         curl -s -X DELETE "${NBI_URL}/${type}/${name}" > /dev/null
     done
 }
@@ -130,7 +138,17 @@ import_provisions() {
     files=$(fetch_local_files "provision-script")
     for file in $files; do
         if [[ $file == *.js ]]; then
-            import_item "provisions" "${file%.js}" "${BASE_DIR}/provision-script/${file}" "application/javascript"
+            local name="${file%.js}"
+            if [[ $name == custom-* ]]; then
+                # Protect existing custom scripts from being overwritten
+                local status_code
+                status_code=$(curl -s -o /dev/null -w "%{http_code}" "${NBI_URL}/provisions/${name}")
+                if [[ "$status_code" == "200" ]]; then
+                    echo -e "${BLUE}Provision script '${name}' already exists. Skipping overwrite to protect manual changes.${NC}"
+                    continue
+                fi
+            fi
+            import_item "provisions" "${name}" "${BASE_DIR}/provision-script/${file}" "application/javascript"
         fi
     done
 }
@@ -144,6 +162,31 @@ import_vparams() {
             import_item "virtual_parameters" "${file%.js}" "${BASE_DIR}/virtual-params/${file}" "application/javascript"
         fi
     done
+}
+
+import_presets() {
+    echo -e "\n${BLUE}Importing Presets...${NC}"
+    prune_all "presets"
+    if [[ -d "${BASE_DIR}/presets" ]]; then
+        files=$(fetch_local_files "presets")
+        for file in $files; do
+            if [[ $file == *.json ]]; then
+                local name="${file%.json}"
+                if [[ $name == custom-* ]]; then
+                    # Protect existing custom presets from being overwritten
+                    local status_code
+                    status_code=$(curl -s -o /dev/null -w "%{http_code}" "${NBI_URL}/presets/${name}")
+                    if [[ "$status_code" == "200" ]]; then
+                        echo -e "${BLUE}Preset '${name}' already exists. Skipping overwrite to protect manual changes.${NC}"
+                        continue
+                    fi
+                fi
+                import_item "presets" "${name}" "${BASE_DIR}/presets/${file}" "application/json"
+            fi
+        done
+    else
+        echo -e "${BLUE}No presets directory found. Skipping.${NC}"
+    fi
 }
 
 flatten_and_import() {
@@ -419,6 +462,7 @@ case $MODE in
     full)
         import_provisions
         import_vparams
+        import_presets
         import_configs
         ;;
     vparams)
