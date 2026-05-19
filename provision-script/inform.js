@@ -67,9 +67,16 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
         declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", null, { value: "" });
     }
 
-    // 2. Configure SSID4 to EtherGig
-    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: daily }, { value: "EtherGig" });
-    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", { value: daily }, { value: false });
+    // 2. Configure SSID4 to EtherGig (only if not already set correctly)
+    let ssid4 = declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: Date.now() });
+    let ssid4Enabled = declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", { value: Date.now() });
+
+    if (ssid4.value && ssid4.value[0] !== "EtherGig") {
+        declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", null, { value: "EtherGig" });
+    }
+    if (ssid4Enabled.value && ssid4Enabled.value[0] !== false) {
+        declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", null, { value: false });
+    }
 
     // 3. Mark provisioning complete: remove AutoProvision tag, add provisioned tag
     tag("AutoProvision", false);
