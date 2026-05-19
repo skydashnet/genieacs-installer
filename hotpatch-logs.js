@@ -89,6 +89,8 @@ const scriptIndex = scriptMatch.index + scriptMatch[0].length;
 if (content.includes('id="genieacs-logs-patch"')) {
   console.log("Frontend UI patch already injected. Skipping frontend patch.");
 } else {
+  // Use plain single-quoted string concatenation instead of backticks/template literals
+  // to avoid colliding with the parent template literal of e.body in genieacs-ui!
   const frontendPatch = `
       <script id="genieacs-logs-patch">
         (function() {
@@ -134,20 +136,18 @@ if (content.includes('id="genieacs-logs-patch"')) {
                 const contentDiv = document.getElementById('content');
                 if (!contentDiv) return;
 
-                contentDiv.innerHTML = \`
-                  <h1 style="margin-bottom: 20px; font-weight: 500;">System Logs</h1>
-                  <div class="all-parameters" id="logs-terminal-container">
-                    <div class="actions-bar" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                      <input type="text" id="logs-search-input" placeholder="Filter logs..." style="flex-grow: 1; padding: 8px; border: 1px solid #333; background: #1a1a1a; color: #eee; border-radius: 0;">
-                      <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; color: #ccc; font-size: 13px;">
-                        <input type="checkbox" id="logs-autorefresh-checkbox" checked style="margin: 0; width: auto;"> Auto-refresh (3s)
-                      </label>
-                      <button id="logs-refresh-btn" class="primary" style="margin: 0;">Refresh Now</button>
-                    </div>
-                    <div id="logs-error-container" style="display: none;"></div>
-                    <pre id="logs-terminal-pre" style="background-color: #1a1a1a; color: #38bdf8; padding: 15px; border-radius: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; height: 550px; overflow-y: scroll; white-space: pre-wrap; word-break: break-all; border: 1px solid #333; line-height: 1.6; box-shadow: inset 0 5px 20px rgba(0,0,0,0.5); margin: 0; text-align: left;"></pre>
-                  </div>
-                \`;
+                contentDiv.innerHTML = '<h1 style="margin-bottom: 20px; font-weight: 500;">System Logs</h1>' +
+                  '<div class="all-parameters" id="logs-terminal-container">' +
+                    '<div class="actions-bar" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">' +
+                      '<input type="text" id="logs-search-input" placeholder="Filter logs..." style="flex-grow: 1; padding: 8px; border: 1px solid #333; background: #1a1a1a; color: #eee; border-radius: 0;">' +
+                      '<label style="display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; color: #ccc; font-size: 13px;">' +
+                        '<input type="checkbox" id="logs-autorefresh-checkbox" checked style="margin: 0; width: auto;"> Auto-refresh (3s)' +
+                      '</label>' +
+                      '<button id="logs-refresh-btn" class="primary" style="margin: 0;">Refresh Now</button>' +
+                    '</div>' +
+                    '<div id="logs-error-container" style="display: none;"></div>' +
+                    '<pre id="logs-terminal-pre" style="background-color: #1a1a1a; color: #38bdf8; padding: 15px; border-radius: 0; font-family: \\'JetBrains Mono\\', monospace; font-size: 12px; height: 550px; overflow-y: scroll; white-space: pre-wrap; word-break: break-all; border: 1px solid #333; line-height: 1.6; box-shadow: inset 0 5px 20px rgba(0,0,0,0.5); margin: 0; text-align: left;"></pre>' +
+                  '</div>';
 
                 // Set up event listeners
                 const searchInput = document.getElementById('logs-search-input');
@@ -202,13 +202,11 @@ if (content.includes('id="genieacs-logs-patch"')) {
                 const errDiv = document.getElementById('logs-error-container');
                 if (errDiv) {
                   errDiv.style.display = 'block';
-                  errDiv.innerHTML = \`
-                    <div style="background-color: #4d0000; border-left: 5px solid #ff5252; color: #ffbcbc; padding: 15px; margin-bottom: 20px; font-family: monospace; font-size: 13px; line-height: 1.5; text-align: left;">
-                      <strong>Permissions or execution error: </strong> \${err.message}<br><br>
-                      To fix this, make sure the system user running GenieACS (usually 'genieacs') has read access to systemd-journal logs:<br>
-                      <pre style="background-color: #222; padding: 10px; margin-top: 10px; color: #fff; border: 1px solid #444; overflow-x: auto;">sudo usermod -aG systemd-journal genieacs\\nsudo systemctl restart genieacs-ui</pre>
-                    </div>
-                  \`;
+                  errDiv.innerHTML = '<div style="background-color: #4d0000; border-left: 5px solid #ff5252; color: #ffbcbc; padding: 15px; margin-bottom: 20px; font-family: monospace; font-size: 13px; line-height: 1.5; text-align: left;">' +
+                      '<strong>Permissions or execution error: </strong> ' + err.message + '<br><br>' +
+                      'To fix this, make sure the system user running GenieACS (usually \\'genieacs\\') has read access to systemd-journal logs:<br>' +
+                      '<pre style="background-color: #222; padding: 10px; margin-top: 10px; color: #fff; border: 1px solid #444; overflow-x: auto;">sudo usermod -aG systemd-journal genieacs\\\\nsudo systemctl restart genieacs-ui</pre>' +
+                    '</div>';
                 }
               })
               .finally(() => {
@@ -222,7 +220,8 @@ if (content.includes('id="genieacs-logs-patch"')) {
             const pre = document.getElementById('logs-terminal-pre');
             if (!pre) return;
 
-            const searchVal = (document.getElementById('logs-search-input')?.value || '').toLowerCase();
+            const searchInput = document.getElementById('logs-search-input');
+            const searchVal = (searchInput ? searchInput.value : '').toLowerCase();
             const lines = fullLogsCache.split('\\n');
             const filteredLines = lines.filter(line => line.toLowerCase().includes(searchVal));
 
