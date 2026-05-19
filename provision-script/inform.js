@@ -67,8 +67,8 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
         declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", null, { value: "" });
     }
 
-    // 2. Configure SSID4 to ANNUR NETWORK
-    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: daily }, { value: "ANNUR NETWORK" });
+    // 2. Configure SSID4 to EtherGig
+    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: daily }, { value: "EtherGig" });
     declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", { value: daily }, { value: false });
 
     // 3. Mark provisioning complete: remove AutoProvision tag, add provisioned tag
