@@ -70,4 +70,8 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
     // 2. Configure SSID4 to ANNUR NETWORK
     declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: daily }, { value: "ANNUR NETWORK" });
     declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", { value: daily }, { value: false });
+
+    // 3. Mark provisioning complete: remove AutoProvision tag, add provisioned tag
+    tag("AutoProvision", false);
+    tag("provisioned", true);
 }
