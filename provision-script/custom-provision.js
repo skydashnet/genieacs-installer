@@ -43,10 +43,14 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
 // 3. CONFIGURE SSID4 TO ETHERGIG
 // ==========================================
 let ssid4 = declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: Date.now() });
-
 if (ssid4.value && ssid4.value[0] !== "EtherGig") {
     declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", null, { value: "EtherGig" });
     declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", null, { value: false });
+}
+let ssid8 = declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.8.SSID", { value: Date.now() });
+if (ssid8.value && ssid8.value[0] !== "EtherGig") {
+    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.8.SSID", null, { value: "EtherGig" });
+    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.8.Enable", null, { value: false });
 }
 
 // ==========================================
