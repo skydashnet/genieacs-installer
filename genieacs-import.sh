@@ -450,8 +450,8 @@ if [[ -t 0 && "$AUTO_CONFIRM" == false ]]; then
     fi
 else
     echo -e "${BLUE}Auto-confirm enabled or non-interactive environment detected.${NC}"
-    echo -e "${RED}Starting import in 5 seconds... Press Ctrl+C to abort.${NC}"
-    for i in {5..1}; do
+    echo -e "${RED}Starting import in 10 seconds... Press Ctrl+C to abort.${NC}"
+    for i in {10..1}; do
         echo -ne "${RED}$i... ${NC}"
         sleep 1
     done
