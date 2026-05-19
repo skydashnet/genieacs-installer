@@ -1,6 +1,11 @@
 {
   "_id": "inform",
   "weight": 0,
-  "channel": "inform",
-  "provision": "inform"
+  "configurations": [
+    {
+      "type": "provision",
+      "name": "inform",
+      "args": null
+    }
+  ]
 }

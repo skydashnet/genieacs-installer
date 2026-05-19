@@ -2,6 +2,14 @@
   "_id": "bootstrap",
   "weight": 0,
   "channel": "bootstrap",
-  "events": "0 BOOTSTRAP",
-  "provision": "bootstrap"
+  "events": {
+    "0 BOOTSTRAP": true
+  },
+  "configurations": [
+    {
+      "type": "provision",
+      "name": "bootstrap",
+      "args": null
+    }
+  ]
 }

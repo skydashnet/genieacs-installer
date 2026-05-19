@@ -1,6 +1,11 @@
 {
   "_id": "default",
   "weight": 0,
-  "channel": "default",
-  "provision": "default"
+  "configurations": [
+    {
+      "type": "provision",
+      "name": "default",
+      "args": null
+    }
+  ]
 }
