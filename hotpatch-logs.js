@@ -78,7 +78,7 @@ ${routerVar}.get("/api/logs", async (ctx) => {
 }
 
 // 3. Inject the frontend script into the HTML body returned by '/' using dynamic script tag matching
-const scriptMatch = content.match(/src=\s*(['"])\s*\$\{\s*APP_JS\s*\}\s*\1\s*>\s*<\s*\/script\s*>/);
+const scriptMatch = content.match(/src=\s*(['"])\s*\$\{\s*[a-zA-Z0-9_$]+\s*\}\s*\1\s*>\s*<\s*\/script\s*>/);
 if (!scriptMatch) {
   console.error("Error: Could not locate frontend entrypoint injection point in genieacs-ui.");
   process.exit(1);
