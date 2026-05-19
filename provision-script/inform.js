@@ -79,6 +79,6 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
     }
 
     // 3. Mark provisioning complete: remove AutoProvision tag, add provisioned tag
-    tag("AutoProvision", false);
-    tag("provisioned", true);
+    declare("Tags.AutoProvision", null, { value: false });
+    declare("Tags.provisioned", null, { value: true });
 }
