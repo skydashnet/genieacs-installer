@@ -52,6 +52,7 @@ declare("InternetGatewayDevice.X_HW_Security.X_HW_FirewallLevel", { value: fiveM
 let autoProvisionTag = declare("Tags.AutoPPPoE", { value: 1 });
 
 if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
+    // 1. Auto-provision PPPoE WAN
     let pppConn = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANPPPConnection.*.Enable", { value: Date.now() });
 
     if (pppConn.size === 0) {
@@ -65,4 +66,8 @@ if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
         declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username", null, { value: "" });
         declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", null, { value: "" });
     }
+
+    // 2. Configure SSID4 to ANNUR NETWORK
+    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.SSID", { value: daily }, { value: "ANNUR NETWORK" });
+    declare("InternetGatewayDevice.LANDevice.1.WLANConfiguration.4.Enable", { value: daily }, { value: true });
 }
