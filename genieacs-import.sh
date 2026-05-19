@@ -141,9 +141,7 @@ import_provisions() {
             local name="${file%.js}"
             if [[ $name == custom-* ]]; then
                 # Protect existing custom scripts from being overwritten
-                local status_code
-                status_code=$(curl -s -o /dev/null -w "%{http_code}" "${NBI_URL}/provisions/${name}")
-                if [[ "$status_code" == "200" ]]; then
+                if curl -s "${NBI_URL}/provisions?query=%7B%22_id%22%3A%22${name}%22%7D" | jq -e 'length > 0' >/dev/null; then
                     echo -e "${BLUE}Provision script '${name}' already exists. Skipping overwrite to protect manual changes.${NC}"
                     continue
                 fi
@@ -174,9 +172,7 @@ import_presets() {
                 local name="${file%.json}"
                 if [[ $name == custom-* ]]; then
                     # Protect existing custom presets from being overwritten
-                    local status_code
-                    status_code=$(curl -s -o /dev/null -w "%{http_code}" "${NBI_URL}/presets/${name}")
-                    if [[ "$status_code" == "200" ]]; then
+                    if curl -s "${NBI_URL}/presets?query=%7B%22_id%22%3A%22${name}%22%7D" | jq -e 'length > 0' >/dev/null; then
                         echo -e "${BLUE}Preset '${name}' already exists. Skipping overwrite to protect manual changes.${NC}"
                         continue
                     fi
