@@ -299,6 +299,10 @@ apply_ui_customizations() {
             echo "/* SHARP CORNERS PATCH */"
             echo "* { border-radius: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }"
 
+            echo "/* EDITOR PATCH (BIGGER EDITOR & SMALLER FONT) */"
+            echo ".CodeMirror { height: 480px !important; font-size: 11px !important; }"
+            echo ".overlay > .put-form { min-width: 850px !important; }"
+
             if [[ "$THEME" == "dark" ]]; then
                 # --- Dark Mode Patch ---
                 echo "/* DARK MODE PATCH */"
