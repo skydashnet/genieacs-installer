@@ -51,7 +51,7 @@ declare("InternetGatewayDevice.X_HW_Security.X_HW_FirewallLevel", { value: fiveM
 // ==========================================
 let autoProvisionTag = declare("Tags.AutoPPPoE", { value: 1 });
 
-if (autoProvisionTag.size > 0) {
+if (autoProvisionTag.value && autoProvisionTag.value[0] === true) {
     let pppConn = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANPPPConnection.*.Enable", { value: Date.now() });
 
     if (pppConn.size === 0) {
