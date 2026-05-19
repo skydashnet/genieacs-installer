@@ -1,0 +1,6 @@
+{
+  "_id": "custom-provision",
+  "weight": 100,
+  "channel": "custom",
+  "provision": "custom-provision"
+}
