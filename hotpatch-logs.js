@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs');
+const path = require('path');
 
 // 1. Locate the genieacs-ui executable
 const searchPaths = [
@@ -21,23 +22,38 @@ if (!binaryPath) {
   process.exit(1);
 }
 
-console.log(`Found genieacs-ui at: ${binaryPath}`);
+// Resolve symlinks to get the real path
+let targetPath = binaryPath;
+try {
+  targetPath = fs.realpathSync(binaryPath);
+} catch (e) {}
 
-let content = fs.readFileSync(binaryPath, 'utf8');
+// If targetPath ends with "bin/genieacs-ui", check if the sibling dist/bin/genieacs-ui exists!
+const possibleDistPath = path.resolve(path.dirname(targetPath), '../dist/bin/genieacs-ui');
+if (fs.existsSync(possibleDistPath)) {
+  targetPath = possibleDistPath;
+}
 
-// 2. Inject the backend API route for /api/logs
-const statusIndex = content.indexOf('router.get("/status"');
-if (statusIndex === -1) {
-  console.error("Error: Could not locate Koa router in genieacs-ui.");
+console.log(`Patching file at: ${targetPath}`);
+
+let content = fs.readFileSync(targetPath, 'utf8');
+
+// 2. Inject the backend API route for /api/logs using dynamic router variable matching
+const routerMatch = content.match(/([a-zA-Z0-9_$]+)\.get\(\s*(['"])[\/]status\2/);
+if (!routerMatch) {
+  console.error("Error: Could not locate Koa router in genieacs-ui compiled binary.");
   process.exit(1);
 }
 
+const routerVar = routerMatch[1];
+const statusIndex = routerMatch.index;
+
 // Check if we already injected the logs route to prevent double injection
-if (content.includes('router.get("/api/logs"')) {
+if (content.includes('/api/logs"')) {
   console.log("Backend API route already patched. Skipping backend patch.");
 } else {
   const backendRoute = `
-router.get("/api/logs", async (ctx) => {
+${routerVar}.get("/api/logs", async (ctx) => {
   const authorizer = ctx.state.authorizer;
   if (!authorizer.hasAccess("logs", 2) && !ctx.state.user) {
     return void (ctx.status = 403);
@@ -58,15 +74,17 @@ router.get("/api/logs", async (ctx) => {
 });
 `;
   content = content.slice(0, statusIndex) + backendRoute + content.slice(statusIndex);
-  console.log("Successfully patched backend /api/logs API route!");
+  console.log(`Successfully patched backend /api/logs API route using router variable: ${routerVar}`);
 }
 
-// 3. Inject the frontend script into the HTML body returned by '/'
-const scriptIndex = content.indexOf('src="${APP_JS}"></script>');
-if (scriptIndex === -1) {
+// 3. Inject the frontend script into the HTML body returned by '/' using dynamic script tag matching
+const scriptMatch = content.match(/src=\s*(['"])\s*\$\{\s*APP_JS\s*\}\s*\1\s*>\s*<\s*\/script\s*>/);
+if (!scriptMatch) {
   console.error("Error: Could not locate frontend entrypoint injection point in genieacs-ui.");
   process.exit(1);
 }
+
+const scriptIndex = scriptMatch.index + scriptMatch[0].length;
 
 if (content.includes('id="genieacs-logs-patch"')) {
   console.log("Frontend UI patch already injected. Skipping frontend patch.");
@@ -223,10 +241,10 @@ if (content.includes('id="genieacs-logs-patch"')) {
         })();
       </script>
   `;
-  content = content.replace('src="${APP_JS}"></script>', 'src="${APP_JS}"></script>' + frontendPatch);
+  content = content.slice(0, scriptIndex) + frontendPatch + content.slice(scriptIndex);
   console.log("Successfully patched frontend UI Logs view wrapper!");
 }
 
 // 4. Save the modified executable back
-fs.writeFileSync(binaryPath, content, 'utf8');
+fs.writeFileSync(targetPath, content, 'utf8');
 console.log("Patched genieacs-ui saved successfully.");
