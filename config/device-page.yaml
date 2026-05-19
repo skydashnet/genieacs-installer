@@ -1505,9 +1505,6 @@
       parameters:
         - InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.*
         - InternetGatewayDevice.LANDevice.*.LANEthernetInterfaceConfig.*.*
-        - InternetGatewayDevice.LANDevice.*.Hosts.Host.*.HostName
-        - InternetGatewayDevice.LANDevice.*.Hosts.Host.*.IPAddress
-        - InternetGatewayDevice.LANDevice.*.Hosts.Host.*.MACAddress
 - parameter: InternetGatewayDevice.LANDevice.1.WLANConfiguration
   type: "'parameter-table'"
   childParameters:
