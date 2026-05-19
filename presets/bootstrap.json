@@ -1,0 +1,7 @@
+{
+  "_id": "bootstrap",
+  "weight": 0,
+  "channel": "bootstrap",
+  "events": "0 BOOTSTRAP",
+  "provision": "bootstrap"
+}
