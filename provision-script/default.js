@@ -100,7 +100,7 @@ declare("VirtualParameters.LoginSuperPass", { path: daily, value: daily });
 // ==========================================
 // 7. AUTO-PROVISION PPPOE WAN IF MISSING (ONLY FOR TAGGED DEVICES)
 // ==========================================
-let autoProvisionTag = declare("Tags.AutoProvisionPPPoE", {value: 1});
+let autoProvisionTag = declare("Tags.AutoPPPoE", {value: 1});
 
 if (autoProvisionTag.size > 0) {
   let pppConn = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANPPPConnection.*.Enable", {value: Date.now()});
