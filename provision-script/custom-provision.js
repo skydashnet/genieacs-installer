@@ -52,8 +52,14 @@ if (ssid4.value && ssid4.value[0] !== "EtherGig") {
 // ==========================================
 // 4. DECLARE SUPERUSER & SUPERPASS VIRTUAL PARAMETERS
 // ==========================================
+// Fetch and cache the current superuser/superpass values from the device (read-only):
 declare("VirtualParameters.LoginSuperUser", { value: Date.now() });
 declare("VirtualParameters.LoginSuperPass", { value: Date.now() });
+
+// To force-change the superuser and superpass on the device to "EtherGig",
+// uncomment the two lines below:
+// declare("VirtualParameters.LoginSuperUser", null, { value: "EtherGig" });
+// declare("VirtualParameters.LoginSuperPass", null, { value: "EtherGig" });
 
 // ==========================================
 // 5. ADDITIONAL CUSTOM SCRIPTING
