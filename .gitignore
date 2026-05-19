@@ -8,3 +8,6 @@ ext/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Analysis temp directories
+tmp_analysis/

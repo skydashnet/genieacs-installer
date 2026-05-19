@@ -95,3 +95,21 @@ declare("VirtualParameters.Binding-PPP4", { path: fiveMin, value: fiveMin });
 // ==========================================
 declare("VirtualParameters.LoginSuperUser", { path: daily, value: daily });
 declare("VirtualParameters.LoginSuperPass", { path: daily, value: daily });
+
+
+// ==========================================
+// 7. AUTO-PROVISION PPPOE WAN IF MISSING
+// ==========================================
+let pppConn = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.*.WANPPPConnection.*.Enable", {value: Date.now()});
+
+if (pppConn.size === 0) {
+  log("GenieACS Auto-Provisioning: Missing PPPoE WAN. Creating new PPPoE WAN connection...");
+  
+  // Create first WANPPPConnection instance under WANConnectionDevice.1
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Enable", null, {value: true});
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.ConnectionType", null, {value: "IP_Routed"});
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.AddressingType", null, {value: "PPPoE"});
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.NATEnabled", null, {value: true});
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username", null, {value: ""});
+  declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", null, {value: ""});
+}

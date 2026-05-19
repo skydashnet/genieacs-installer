@@ -436,10 +436,19 @@ done
 
 apply_ui_customizations "$PUBLIC_DIR"
 
+# Apply Logs page UI and backend hot-patch
+echo -e "\n${BLUE}Applying System Logs tab hot-patch...${NC}"
+if [[ -f "./hotpatch-logs.js" ]]; then
+    node ./hotpatch-logs.js || echo -e "${RED}Warning: Could not execute hotpatch-logs.js script (make sure node is installed and run as root)${NC}"
+else
+    echo -e "${RED}Warning: hotpatch-logs.js not found in current directory.${NC}"
+fi
 
 # Restart UI service to refresh cache
 echo -e "\n${BLUE}Restarting GenieACS UI to apply changes...${NC}"
 systemctl restart genieacs-ui 2>/dev/null || echo -e "${RED}Warning: Could not restart genieacs-ui service (try running as root)${NC}"
+
+
 
 echo -e "\n${GREEN}========================================================================${NC}"
 echo -e "${GREEN}Import Complete!${NC}"
