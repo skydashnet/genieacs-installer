@@ -15,8 +15,28 @@ LOG_DIR="/var/log/genieacs"
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
 BLUE='\033[0;36m'
 NC='\033[0m'
+
+# Wait for a systemd service to become active, with a timeout.
+# Usage: wait_for_service <service_name> [timeout_seconds]
+wait_for_service() {
+    local svc="$1"
+    local timeout="${2:-60}"
+    local elapsed=0
+    echo -e "${BLUE}Waiting for ${svc} to become active (timeout: ${timeout}s)...${NC}"
+    while ! systemctl is-active --quiet "$svc"; do
+        if (( elapsed >= timeout )); then
+            echo -e "${YELLOW}WARNING: ${svc} did not become active within ${timeout}s. Continuing anyway...${NC}"
+            return 1
+        fi
+        sleep 2
+        (( elapsed += 2 ))
+    done
+    echo -e "${GREEN}${svc} is active.${NC}"
+    return 0
+}
 
 show_header() {
     # Two-tone branding: Cyan for ETHER, White for GIG
@@ -89,6 +109,7 @@ systemctl daemon-reload
 
 systemctl enable mongod
 systemctl start mongod
+wait_for_service mongod 60
 
 # 4. Install GenieACS
 echo -e "${BLUE}Installing GenieACS via NPM...${NC}"
@@ -117,6 +138,7 @@ for service in cwmp nbi fs ui; do
     systemctl daemon-reload
     systemctl enable "genieacs-$service"
     systemctl start "genieacs-$service"
+    wait_for_service "genieacs-$service" 60
 done
 
 # 8. Configure Logrotate
