@@ -21,12 +21,16 @@ if ("value" in args[1]) {
 } else {
     let keys = [
         'InternetGatewayDevice.WANDevice.1.X_CT-COM_EponInterfaceConfig.TransceiverTemperature',
+        'InternetGatewayDevice.WANDevice.1.X_CT-COM_GponInterfaceConfig.TransceiverTemperature',
         'InternetGatewayDevice.WANDevice.1.X_GponInterafceConfig.TransceiverTemperature',
+        'InternetGatewayDevice.WANDevice.1.X_EponInterafceConfig.TransceiverTemperature',
         'InternetGatewayDevice.WANDevice.1.X_CMCC_EponInterfaceConfig.TransceiverTemperature',
-        'InternetGatewayDevice.WANDevice.1.X_CMCC_EponInterfaceConfig.RXPower',
+        'InternetGatewayDevice.WANDevice.1.X_CMCC_GponInterfaceConfig.TransceiverTemperature',
         'InternetGatewayDevice.WANDevice.1.X_CU_WANEPONInterfaceConfig.OpticalTransceiver.Temperature',
+        'InternetGatewayDevice.WANDevice.1.X_CU_WANGPONInterfaceConfig.OpticalTransceiver.Temperature',
         'InternetGatewayDevice.WANDevice.1.X_ZTE-COM_WANPONInterfaceConfig.TransceiverTemperature',
         'InternetGatewayDevice.WANDevice.1.X_FH_GponInterfaceConfig.TransceiverTemperature',
+        'InternetGatewayDevice.WANDevice.1.X_FH_EponInterfaceConfig.TransceiverTemperature',
         'InternetGatewayDevice.DeviceInfo.TemperatureStatus.TemperatureSensor.2.Value'
     ];
 
