@@ -109,7 +109,7 @@ systemctl daemon-reload
 
 systemctl enable mongod
 systemctl start mongod
-wait_for_service mongod 60
+wait_for_service mongod 60 || true
 
 # 4. Install GenieACS
 echo -e "${BLUE}Installing GenieACS via NPM...${NC}"
@@ -138,7 +138,7 @@ for service in cwmp nbi fs ui; do
     systemctl daemon-reload
     systemctl enable "genieacs-$service"
     systemctl start "genieacs-$service"
-    wait_for_service "genieacs-$service" 60
+    wait_for_service "genieacs-$service" 60 || true
 done
 
 # 8. Configure Logrotate
@@ -157,27 +157,41 @@ $LOG_DIR/*.log $LOG_DIR/*.yaml {
 EOF
 
 # 9. Initial Configuration Import
-echo -e "${BLUE}Waiting for GenieACS NBI to start...${NC}"
-until curl -s http://localhost:7557/ > /dev/null; do
+echo -e "${BLUE}Waiting for GenieACS NBI to become reachable (timeout: 60s)...${NC}"
+nbi_elapsed=0
+nbi_ready=false
+until curl -s http://localhost:7557/ > /dev/null 2>&1; do
+    if (( nbi_elapsed >= 60 )); then
+        echo -e "\n${YELLOW}WARNING: GenieACS NBI did not respond within 60s. Skipping import step.${NC}"
+        break
+    fi
     echo -n "."
     sleep 2
+    (( nbi_elapsed += 2 ))
 done
-echo ""
-
-if [[ "$RUN_IMPORT" == "ask" ]]; then
-    read -p "Do you want to import configuration from GitHub now? [Y/n]: " import_choice
-    if [[ "$import_choice" =~ ^[Nn]$ ]]; then
-        RUN_IMPORT="false"
-    else
-        RUN_IMPORT="true"
-    fi
+if (( nbi_elapsed < 60 )); then
+    echo -e "\n${GREEN}GenieACS NBI is reachable.${NC}"
+    nbi_ready=true
 fi
 
-if [[ "$RUN_IMPORT" == "true" ]]; then
-    echo -e "${BLUE}Starting configuration import...${NC}"
-    ./genieacs-import.sh --full
+if [[ "$nbi_ready" == "true" ]]; then
+    if [[ "$RUN_IMPORT" == "ask" ]]; then
+        read -p "Do you want to import configuration from GitHub now? [Y/n]: " import_choice
+        if [[ "$import_choice" =~ ^[Nn]$ ]]; then
+            RUN_IMPORT="false"
+        else
+            RUN_IMPORT="true"
+        fi
+    fi
+
+    if [[ "$RUN_IMPORT" == "true" ]]; then
+        echo -e "${BLUE}Starting configuration import...${NC}"
+        ./genieacs-import.sh --full
+    else
+        echo -e "${BLUE}Skipping configuration import. You can run it later using ./genieacs-import.sh${NC}"
+    fi
 else
-    echo -e "${BLUE}Skipping configuration import. You can run it later using ./genieacs-import.sh${NC}"
+    echo -e "${YELLOW}Skipping configuration import because GenieACS NBI is not reachable. Run ./genieacs-import.sh manually once services are up.${NC}"
 fi
 
 echo -e "${GREEN}GenieACS Installation and Configuration Complete!${NC}"
